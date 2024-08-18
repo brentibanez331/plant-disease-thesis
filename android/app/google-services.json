@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "682695453450",
+    "project_id": "agronex-thesis",
+    "storage_bucket": "agronex-thesis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682695453450:android:adcc58246aee118a32a8f3",
+        "android_client_info": {
+          "package_name": "com.example.thesis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcMeAStk6Un9a_cC_kOnjZ7v8pILUJw9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
