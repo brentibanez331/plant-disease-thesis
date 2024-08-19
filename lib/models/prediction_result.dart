@@ -1,10 +1,15 @@
 class PredictionResult {
-  final int confidence;
-  final String plantName;
-  final String disease;
+  final double confidence;
+  final String plant;
+  final String status;
 
   PredictionResult(
-      {required this.confidence,
-      required this.plantName,
-      required this.disease});
+      {required this.confidence, required this.plant, required this.status});
+
+  factory PredictionResult.fromJson(Map<String, dynamic> json) {
+    return PredictionResult(
+        confidence: json['confidence'] ?? 0,
+        plant: json['plant'] ?? '',
+        status: json['status'] ?? '');
+  }
 }
