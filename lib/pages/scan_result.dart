@@ -9,6 +9,8 @@ import "package:thesis/models/prediction_result.dart";
 import "package:thesis/services/plant_predict_service.dart";
 import 'package:http/http.dart' as http;
 
+import 'package:image/image.dart' as img;
+
 class ScanResultPage extends StatefulWidget {
   final XFile xImage;
   final bool newPrediction;
@@ -23,6 +25,7 @@ class ScanResultPage extends StatefulWidget {
 
 class _ScanResultPageState extends State<ScanResultPage> {
   File? image;
+  File? scaledImage;
   bool _isLoading = true;
   bool _requestFailed = false;
   late PredictionResult predictionResult;
@@ -37,20 +40,55 @@ class _ScanResultPageState extends State<ScanResultPage> {
     // }
   }
 
+  Future<File> resizeAndCropImage(File file) async {
+    // Read the image from file
+    img.Image? image = img.decodeImage(await file.readAsBytes());
+
+    if (image != null) {
+      // Calculate the center square dimensions
+      int size = image.width < image.height ? image.width : image.height;
+      int x = (image.width - size) ~/ 2;
+      int y = (image.height - size) ~/ 2;
+
+      // Crop square in the center
+      image = img.copyCrop(image, x: x, y: y, width: size, height: size);
+
+      // Resize image to 224x224
+      image = img.copyResize(image, width: 224, height: 224);
+
+      // Convert image to bytes
+      List<int> resizedBytes = img.encodePng(image);
+
+      // Create a new file or overwrite the original file
+      File resizedFile = File(file.path);
+      await resizedFile.writeAsBytes(resizedBytes);
+
+      return resizedFile;
+    } else {
+      throw Exception('Failed to load image');
+    }
+  }
+
   Future<void> predictDisease(File? image) async {
+    if (!mounted) return;
     setState(() {
       _isLoading = true;
       _requestFailed = false;
     });
 
+    scaledImage = await resizeAndCropImage(image!);
+
     try {
       log("GCP_API URL: ${dotenv.env["GCP_API"]}");
       var request =
           http.MultipartRequest("POST", Uri.parse(dotenv.env["GCP_API"]!));
-      request.files.add(await http.MultipartFile.fromPath("fil", image!.path));
+      request.files
+          .add(await http.MultipartFile.fromPath("file", scaledImage!.path));
 
       http.Response response =
           await http.Response.fromStream(await request.send());
+
+      if (!mounted) return;
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
@@ -69,20 +107,24 @@ class _ScanResultPageState extends State<ScanResultPage> {
       }
     } catch (e) {
       log("Exception: $e");
-      setState(() {
-        _requestFailed = true;
-      });
+      if (mounted) {
+        setState(() {
+          _requestFailed = true;
+        });
+      }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Results")),
+      appBar: AppBar(title: const Text("Results")),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -97,7 +139,8 @@ class _ScanResultPageState extends State<ScanResultPage> {
 
               // While Loading, show a progress indicator
               // if (_isLoading)
-              //   Expanded(child: Center(child: CircularProgressIndicator())),
+              //   const Expanded(
+              //       child: Center(child: CircularProgressIndicator())),
 
               // // Show a retry button if request fails in any case
               // if (_requestFailed)
@@ -106,10 +149,10 @@ class _ScanResultPageState extends State<ScanResultPage> {
               //           child: Column(
               //     mainAxisAlignment: MainAxisAlignment.center,
               //     children: [
-              //       Icon(Icons.warning, color: Colors.red, size: 50),
-              //       Text("Please try again"),
+              //       const Icon(Icons.warning, color: Colors.red, size: 50),
+              //       const Text("Please try again"),
               //       ElevatedButton(
-              //           child: Text("Retry"),
+              //           child: const Text("Retry"),
               //           onPressed: () async {
               //             await predictDisease(image);
               //           }),
