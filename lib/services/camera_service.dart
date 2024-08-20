@@ -6,8 +6,11 @@ class CameraService {
   static final ImagePicker _picker = ImagePicker();
 
   static Future<XFile?> pickImageFromCamera() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.camera);
+    final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.rear,
+        maxHeight: 1000,
+        maxWidth: 1000);
     return pickedFile;
   }
 
