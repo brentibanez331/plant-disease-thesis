@@ -26,3 +26,5 @@ flutter:
 
   assets:
     - .env
+
+    - img/leafSample.jpeg

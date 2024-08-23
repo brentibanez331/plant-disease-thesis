@@ -14,15 +14,15 @@ class _DashboardState extends State<Dashboard> {
   int currentPageIndex = 0;
 
   final List<Widget> _pages = [
-    HomePage(),
-    ScanPage(),
+    const HomePage(),
+    const ScanPage(),
   ];
 
   void showDialogTrigger() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return (Text("asdfasdf"));
+          return (const Text("asdfasdf"));
         });
   }
 
@@ -46,7 +46,7 @@ class _DashboardState extends State<Dashboard> {
         child: Scaffold(
           appBar: AppBar(
               // automaticallyImplyLeading: false,
-              title: Text("Dashboard"),
+              title: const Text("Dashboard"),
               foregroundColor: Colors.white,
               backgroundColor: Colors.blue,
               actions: [
@@ -54,12 +54,17 @@ class _DashboardState extends State<Dashboard> {
                   onSelected: (value) {
                     if (value == 'Logout') {
                       _logout();
+                    } else if (value == 'Settings') {
+                      //_settings();
                     }
                   },
                   icon: const Icon(Icons.more_vert),
                   itemBuilder: (BuildContext context) {
                     return [
-                      PopupMenuItem(value: "Logout", child: Text("Logout"))
+                      const PopupMenuItem(
+                          value: "Logout", child: Text("Logout")),
+                      const PopupMenuItem(
+                          value: "Settings", child: Text("Settings"))
                     ];
                   },
                 )
@@ -75,7 +80,7 @@ class _DashboardState extends State<Dashboard> {
               });
             },
             selectedIndex: currentPageIndex,
-            destinations: [
+            destinations: const [
               NavigationDestination(
                 icon: Icon(Icons.home_outlined),
                 label: 'Home',
