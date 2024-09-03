@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:thesis/pages/home.dart';
 import 'package:thesis/pages/scan.dart';
+import 'package:thesis/pages/community.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _DashboardState extends State<Dashboard> {
   final List<Widget> _pages = [
     const HomePage(),
     const ScanPage(),
+    const Community(),
   ];
 
   void showDialogTrigger() {
@@ -77,6 +79,7 @@ class _DashboardState extends State<Dashboard> {
             onDestinationSelected: (index) {
               setState(() {
                 currentPageIndex = index;
+                debugPrint(currentPageIndex.toString());
               });
             },
             selectedIndex: currentPageIndex,
@@ -86,7 +89,16 @@ class _DashboardState extends State<Dashboard> {
                 label: 'Home',
                 selectedIcon: Icon(Icons.home),
               ),
-              NavigationDestination(icon: Icon(Icons.camera), label: 'Scan')
+              NavigationDestination(
+                icon: Icon(Icons.camera),
+                label: 'Scan',
+                selectedIcon: Icon(Icons.camera_outlined),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.chat),
+                label: 'Community',
+                selectedIcon: Icon(Icons.chat_outlined),
+              ),
             ],
           ),
         ),

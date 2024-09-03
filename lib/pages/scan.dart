@@ -44,7 +44,8 @@ class _ScanPageState extends State<ScanPage> {
   final List<String> buttonTitles = [
     'Tomato Blight',
     'Tomato',
-    'Lo'
+    'Lo',
+    'Grapes',
     // Add more titles as needed
   ];
 
@@ -132,34 +133,40 @@ class _ScanPageState extends State<ScanPage> {
                     return SizedBox(
                       width: 200,
                       child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image(
-                                image: AssetImage("img/leafSample.jpeg"),
-                                height: 100,
-                                width: double.maxFinite,
-                                fit: BoxFit.cover,
-                              ),
-                              SizedBox(height: 10),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(buttonTitles[index]),
-                                    Text("Status: "),
-                                    Text("Aug 28, 10:00 AM"),
-                                  ],
+                        color: AppColors.primary,
+                        child: GestureDetector(
+                          onTap: () {
+                            debugPrint('Tapped Current');
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Image(
+                                  image: AssetImage("img/leafSample.jpeg"),
+                                  height: 100,
+                                  width: double.maxFinite,
+                                  fit: BoxFit.cover,
                                 ),
-                              )
-                            ],
+                                const SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(buttonTitles[index]),
+                                      const Text("Status: "),
+                                      const Text("Aug 28, 10:00 AM"),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                        color: AppColors.primary,
                       ),
                     );
                   },
@@ -205,11 +212,11 @@ class _ScanPageState extends State<ScanPage> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
+                        const Row(
                           children: [
                             Text(
                               "Previous 30 Days",
@@ -221,7 +228,7 @@ class _ScanPageState extends State<ScanPage> {
                           ],
                         ),
                         TextButton(
-                          child: Text("View All"),
+                          child: const Text("View All"),
                           onPressed: () {},
                         )
                       ],
@@ -232,7 +239,7 @@ class _ScanPageState extends State<ScanPage> {
               ListView.builder(
                   shrinkWrap: true,
                   itemCount: buttonTitles.length,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                         padding: const EdgeInsets.only(bottom: 4.0),
@@ -240,7 +247,9 @@ class _ScanPageState extends State<ScanPage> {
                           // style: FilledButton.styleFrom(
                           //     backgroundColor: AppColors.cardBackground),
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              debugPrint('Tapped Previous');
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
@@ -249,24 +258,24 @@ class _ScanPageState extends State<ScanPage> {
                                 children: [
                                   Row(
                                     children: [
-                                      Image(
+                                      const Image(
                                           image:
                                               AssetImage("img/leafSample.jpeg"),
                                           width: 50,
                                           height: 50),
-                                      SizedBox(width: 10),
+                                      const SizedBox(width: 10),
                                       Column(
                                         // mainAxisAlignment: MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(buttonTitles[index]),
-                                          Text("Status: Blight"),
+                                          const Text("Status: Blight"),
                                         ],
                                       )
                                     ],
                                   ),
-                                  Text("Aug 24")
+                                  const Text("Aug 24")
                                 ],
                               ),
                             ),
