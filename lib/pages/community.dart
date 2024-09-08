@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thesis/pages/comments.dart';
 
 class Community extends StatefulWidget {
   const Community({Key? key}) : super(key: key);
@@ -8,6 +9,9 @@ class Community extends StatefulWidget {
 }
 
 class _CommunityState extends State<Community> {
+  // Track whether the button is liked
+  bool isLiked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,15 +31,14 @@ class _CommunityState extends State<Community> {
         itemBuilder: (BuildContext context, int index) {
           return Column(
             children: [
-              // Top divider outside the container
-              if (index == 0) const Divider(thickness: 1),
               Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Account and post details
                       Row(
                         children: [
                           const CircleAvatar(
@@ -43,7 +46,7 @@ class _CommunityState extends State<Community> {
                             backgroundImage:
                                 NetworkImage('https://placeholder.com/40x40'),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 8),
                           Expanded(
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,23 +87,195 @@ class _CommunityState extends State<Community> {
                               ];
                             },
                             onSelected: (String value) {
-                              // Handle menu item selection
                               print('Selected: $value');
                             },
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                      // Comment Post
+                      //Title
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          'LOREM IPSUM',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      //Content
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 4),
+                        child: Text(
+                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      // Buttons
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: Colors.grey[300]!,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // Like Button with InkWell for custom highlight
+                                      SizedBox(
+                                        height: 32,
+                                        child: InkWell(
+                                          borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(16),
+                                            bottomLeft: Radius.circular(16),
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              isLiked = !isLiked;
+                                            });
+                                          },
+                                          customBorder:
+                                              const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(16),
+                                              bottomLeft: Radius.circular(16),
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12.0),
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  isLiked
+                                                      ? Icons.thumb_up_alt
+                                                      : Icons
+                                                          .thumb_up_alt_outlined,
+                                                  size: 18,
+                                                ),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  '100',
+                                                  style: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontSize: 13),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 20,
+                                        width: 1,
+                                        color: Colors.grey[300],
+                                      ),
+                                      // Comment Button with InkWell for custom highlight
+                                      SizedBox(
+                                        height: 32,
+                                        child: InkWell(
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(16),
+                                            bottomRight: Radius.circular(16),
+                                          ),
+                                          onTap: () {
+                                            navigateToComments(context);
+                                          },
+                                          customBorder:
+                                              const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(16),
+                                              bottomRight: Radius.circular(16),
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12.0),
+                                            child: Row(
+                                              children: [
+                                                const Icon(Icons.comment,
+                                                    size: 18),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  '49',
+                                                  style: TextStyle(
+                                                      color: Colors.grey[600],
+                                                      fontSize: 13),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 12.0, left: 20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: Colors.grey[300]!,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    onTap: () {
+                                      print('Share button pressed');
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          const Icon(Icons.share, size: 18),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            'Share',
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ),
-              // Bottom divider outside the container
               const Divider(thickness: 1),
             ],
           );
