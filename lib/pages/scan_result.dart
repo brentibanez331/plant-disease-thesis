@@ -95,6 +95,8 @@ class _ScanResultPageState extends State<ScanResultPage> {
 
         predictionResult = PredictionResult.fromJson(jsonResponse);
 
+        // Make another API request for the Scan Info Storing
+
         log("Response: ${jsonResponse.toString()}");
         setState(() {
           _requestFailed = false;
