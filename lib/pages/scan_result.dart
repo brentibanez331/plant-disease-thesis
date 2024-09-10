@@ -8,7 +8,7 @@ import "package:image_picker/image_picker.dart";
 import "package:thesis/models/prediction_result.dart";
 import "package:thesis/services/plant_predict_service.dart";
 import 'package:http/http.dart' as http;
-
+import 'package:path/path.dart' as path;
 import 'package:image/image.dart' as img;
 
 class ScanResultPage extends StatefulWidget {
@@ -35,9 +35,9 @@ class _ScanResultPageState extends State<ScanResultPage> {
     super.initState();
     image = File(widget.xImage.path);
 
-    // if (widget.newPrediction) {
-    //   predictDisease(image);
-    // }
+    if (widget.newPrediction) {
+      predictDisease(image);
+    }
   }
 
   Future<File> resizeAndCropImage(File file) async {
@@ -96,6 +96,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
         predictionResult = PredictionResult.fromJson(jsonResponse);
 
         // Make another API request for the Scan Info Storing
+        await storeScanResult();
 
         log("Response: ${jsonResponse.toString()}");
         setState(() {
@@ -123,6 +124,54 @@ class _ScanResultPageState extends State<ScanResultPage> {
     }
   }
 
+  Future<void> storeScanResult() async {
+    if (predictionResult == null || scaledImage == null) {
+      log("Prediction result or scaled image is null");
+      return;
+    }
+
+    const apiUrl = "http://10.0.2.2:5225/api/scan/add";
+
+    try {
+      var request = http.MultipartRequest("POST", Uri.parse(apiUrl));
+
+      request.files.add(await http.MultipartFile.fromPath(
+          'Image', scaledImage!.path,
+          filename: path.basename(scaledImage!.path)));
+
+      request.fields['UserId'] = "1";
+      request.fields['Plant'] = predictionResult.plant;
+      request.fields['Disease'] = predictionResult.status;
+      request.fields['Confidence'] = predictionResult.confidence.toString();
+
+      var response = await request.send();
+
+      if (response.statusCode == 201) {
+        var responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+
+        log("Scan stored successfully: ${jsonResponse.toString()}");
+        setState(() {
+          _requestFailed = false;
+        });
+      } else {
+        log("Error storing scan: ${response.statusCode}");
+        setState(() {
+          _requestFailed = true;
+        });
+      }
+    } catch (e) {
+      log("Exception: $e");
+      setState(() {
+        _requestFailed = true;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,57 +189,57 @@ class _ScanResultPageState extends State<ScanResultPage> {
               ),
 
               // While Loading, show a progress indicator
-              // if (_isLoading)
-              //   const Expanded(
-              //       child: Center(child: CircularProgressIndicator())),
+              if (_isLoading)
+                const Expanded(
+                    child: Center(child: CircularProgressIndicator())),
 
-              // // Show a retry button if request fails in any case
-              // if (_requestFailed)
-              //   Expanded(
-              //       child: Center(
-              //           child: Column(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       const Icon(Icons.warning, color: Colors.red, size: 50),
-              //       const Text("Please try again"),
-              //       ElevatedButton(
-              //           child: const Text("Retry"),
-              //           onPressed: () async {
-              //             await predictDisease(image);
-              //           }),
-              //     ],
-              //   ))),
+              // Show a retry button if request fails in any case
+              if (_requestFailed)
+                Expanded(
+                    child: Center(
+                        child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.warning, color: Colors.red, size: 50),
+                    const Text("Please try again"),
+                    ElevatedButton(
+                        child: const Text("Retry"),
+                        onPressed: () async {
+                          await predictDisease(image);
+                        }),
+                  ],
+                ))),
 
-              // // Show results
-              // if (!_requestFailed && !_isLoading)
-              //   Padding(
-              //     padding: const EdgeInsets.all(16.0),
-              //     child: Column(
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text("Confidence: ${predictionResult.confidence}"),
-              //         Text("Plant: ${predictionResult.plant}"),
-              //         Text("Status: ${predictionResult.status}")
-              //       ],
-              //     ),
-              //   ),
+              // Show results
+              if (!_requestFailed && !_isLoading)
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Confidence: ${predictionResult.confidence}"),
+                      Text("Plant: ${predictionResult.plant}"),
+                      Text("Status: ${predictionResult.status}")
+                    ],
+                  ),
+                ),
 
               // ------------- IMPORTANT!!! -----------------
               // Build dummy data here for stylings
               // Comment the API request predictDisease() in the initState
               // Comment all elements with conditional renderings
               // Don't forget to update the original result widgets and delete this...
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Confidence: 99.99%"),
-                    Text("Plant: Potato"),
-                    Text("Status: Northern Leaf Blight")
-                  ],
-                ),
-              )
+              // const Padding(
+              //   padding: EdgeInsets.all(16.0),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text("Confidence: 99.99%"),
+              //       Text("Plant: Potato"),
+              //       Text("Status: Northern Leaf Blight")
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),
