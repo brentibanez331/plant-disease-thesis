@@ -293,7 +293,12 @@ class _ScanPageState extends State<ScanPage> {
                                                   Container(
                                                       decoration: BoxDecoration(
                                                           color:
-                                                              AppColors.danger),
+                                                              AppColors.danger,
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          4))),
                                                       padding:
                                                           EdgeInsets.symmetric(
                                                               horizontal: 4,
