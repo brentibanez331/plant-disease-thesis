@@ -8,7 +8,7 @@ class PredictionResult {
 
   factory PredictionResult.fromJson(Map<String, dynamic> json) {
     return PredictionResult(
-        confidence: json['confidence'] ?? 0,
+        confidence: (json['confidence'] as num?)?.toDouble() ?? 0.0,
         plant: json['plant'] ?? '',
         status: json['status'] ?? '');
   }

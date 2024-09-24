@@ -1,13 +1,20 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thesis/models/scans.dart';
 import 'package:thesis/pages/scan_result.dart';
 import 'package:thesis/services/camera_service.dart';
+import 'package:thesis/services/scan_service.dart';
 import 'package:thesis/utils/colors.dart';
 import 'package:thesis/widgets/containerWidgets.dart';
+import "package:intl/intl.dart";
 
 class ScanPage extends StatefulWidget {
-  const ScanPage({Key? key}) : super(key: key);
+  final ValueNotifier<List<Scan>?> scans;
+  final VoidCallback refreshAllData;
+
+  const ScanPage({Key? key, required this.scans, required this.refreshAllData})
+      : super(key: key);
 
   @override
   _ScanPageState createState() => _ScanPageState();
@@ -15,6 +22,7 @@ class ScanPage extends StatefulWidget {
 
 class _ScanPageState extends State<ScanPage> {
   File? image;
+  var dateFormatter = DateFormat('MMM d');
 
   Future<void> _openCamera() async {
     final XFile? pickedFile = await CameraService.pickImageFromCamera();
@@ -22,7 +30,8 @@ class _ScanPageState extends State<ScanPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ScanResultPage(xImage: pickedFile),
+          builder: (context) => ScanResultPage(
+              xImage: pickedFile, refreshAllData: widget.refreshAllData),
         ),
       );
     }
@@ -34,7 +43,10 @@ class _ScanPageState extends State<ScanPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ScanResultPage(xImage: pickedFile),
+          builder: (context) => ScanResultPage(
+            xImage: pickedFile,
+            refreshAllData: widget.refreshAllData,
+          ),
         ),
       );
     }
@@ -46,7 +58,6 @@ class _ScanPageState extends State<ScanPage> {
     'Tomato',
     'Lo',
     'Grapes',
-    // Add more titles as needed
   ];
 
   @override
@@ -236,51 +247,78 @@ class _ScanPageState extends State<ScanPage> {
                   ),
                 ),
               ),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: buttonTitles.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                        padding: const EdgeInsets.only(bottom: 4.0),
-                        child: Card(
-                          // style: FilledButton.styleFrom(
-                          //     backgroundColor: AppColors.cardBackground),
-                          child: GestureDetector(
-                            onTap: () {
-                              debugPrint('Tapped Previous');
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Image(
-                                          image:
-                                              AssetImage("img/leafSample.jpeg"),
-                                          width: 50,
-                                          height: 50),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                        // mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+              ValueListenableBuilder(
+                  valueListenable: widget.scans,
+                  builder: (context, scans, _) {
+                    if (scans != null) {
+                      return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: widget.scans.value!.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final items = widget.scans.value![index];
+
+                            return Padding(
+                                padding: const EdgeInsets.only(bottom: 4.0),
+                                child: Card(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      debugPrint('Tapped Previous');
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16.0, horizontal: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(buttonTitles[index]),
-                                          const Text("Status: Blight"),
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    "http://10.0.2.2:5225${items.imageFilePath}"),
+                                                radius: 35,
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Column(
+                                                // mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(items.plant,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20)),
+                                                  Container(
+                                                      decoration: BoxDecoration(
+                                                          color:
+                                                              AppColors.danger),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 4,
+                                                              vertical: 2),
+                                                      child: Text(
+                                                          "${items.diseaseType}",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white))),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          Text(dateFormatter
+                                              .format(items.createdAt))
                                         ],
-                                      )
-                                    ],
+                                      ),
+                                    ),
                                   ),
-                                  const Text("Aug 24")
-                                ],
-                              ),
-                            ),
-                          ),
-                        ));
+                                ));
+                          });
+                    } else {
+                      // Handle the case where scans is null (e.g., show a loading indicator)
+                      return const Center(child: CircularProgressIndicator());
+                    }
                   })
             ],
           ),

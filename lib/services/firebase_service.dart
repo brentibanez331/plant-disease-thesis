@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class FirebaseAuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static const storage = FlutterSecureStorage();
 
   static Future<void> verifyPhoneNumber(
     String phoneNumber, {
@@ -61,8 +63,13 @@ class FirebaseAuthService {
       if (response.statusCode == 200) {
         log("Request is successful");
         // Show dialog - SUCCESS
+        final responseData = jsonDecode(response.body);
 
         // Handle successful response, such as storing the token or navigating to another screen
+        log(responseData['token']);
+        await storage.write(key: "token", value: responseData['token']);
+        await storage.write(
+            key: "userId", value: (responseData['user']['id']).toString());
         return true;
       } else {
         log("Request failed with status: ${response.statusCode}");

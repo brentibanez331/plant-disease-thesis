@@ -1,8 +1,13 @@
+import 'dart:developer';
+
 import "package:flutter/material.dart";
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:thesis/models/scans.dart';
 import 'package:thesis/pages/home.dart';
 import 'package:thesis/pages/scan.dart';
 import 'package:thesis/pages/community.dart';
+import 'package:thesis/services/scan_service.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -13,12 +18,43 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int currentPageIndex = 0;
+  final storage = FlutterSecureStorage();
+  late String? token;
+  late String? userId;
 
-  final List<Widget> _pages = [
-    const HomePage(),
-    const ScanPage(),
-    const Community(),
-  ];
+  // final List<Widget> _pages = [
+  //   const
+  // ];
+
+  final scans = ValueNotifier<List<Scan>?>([]);
+
+  @override
+  void initState() {
+    getStorageAndFetchData();
+    // getAllData();
+  }
+
+  void getStorageAndFetchData() async {
+    token = await storage.read(key: 'token');
+    userId = await storage.read(key: 'userId');
+    if (token == null) {
+      return;
+    }
+    getAllData();
+  }
+
+  void getAllData() async {
+    log("GETTING ALL DATA!!!!!");
+    try {
+      final fetchedScans = await ScanService.getAllScans(token!, userId!);
+
+      setState(() {
+        scans.value = fetchedScans;
+      });
+    } catch (e) {
+      log("[Exception] $e: Error in Retrieving Data");
+    }
+  }
 
   void showDialogTrigger() {
     showDialog(
@@ -73,7 +109,11 @@ class _DashboardState extends State<Dashboard> {
               ]),
           body: IndexedStack(
             index: currentPageIndex,
-            children: _pages,
+            children: [
+              const HomePage(),
+              ScanPage(scans: scans, refreshAllData: getAllData),
+              const Community(),
+            ],
           ),
           bottomNavigationBar: NavigationBar(
             onDestinationSelected: (index) {

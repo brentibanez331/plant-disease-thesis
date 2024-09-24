@@ -4,7 +4,9 @@ import "dart:io";
 
 import "package:flutter/material.dart";
 import "package:flutter_dotenv/flutter_dotenv.dart";
+import "package:flutter_secure_storage/flutter_secure_storage.dart";
 import "package:image_picker/image_picker.dart";
+import "package:thesis/models/disease_info.dart";
 import "package:thesis/models/prediction_result.dart";
 import "package:thesis/services/plant_predict_service.dart";
 import 'package:http/http.dart' as http;
@@ -14,9 +16,13 @@ import 'package:image/image.dart' as img;
 class ScanResultPage extends StatefulWidget {
   final XFile xImage;
   final bool newPrediction;
+  final VoidCallback refreshAllData;
 
   const ScanResultPage(
-      {Key? key, required this.xImage, this.newPrediction = true})
+      {Key? key,
+      required this.xImage,
+      this.newPrediction = true,
+      required this.refreshAllData})
       : super(key: key);
 
   @override
@@ -29,15 +35,26 @@ class _ScanResultPageState extends State<ScanResultPage> {
   bool _isLoading = true;
   bool _requestFailed = false;
   late PredictionResult predictionResult;
+  late DiseaseInfo diseaseInfo;
+  static const storage = FlutterSecureStorage();
+  late String? token;
+
+  // var dateFormatter = DateFormat('MMM d, yyyy');
+  // var dateTimeFormatter = DateFormat('MMMM d, yyyy - hh:mm:ss a');
 
   @override
   void initState() {
     super.initState();
+    getToken();
     image = File(widget.xImage.path);
 
     if (widget.newPrediction) {
       predictDisease(image);
     }
+  }
+
+  Future<void> getToken() async {
+    token = await storage.read(key: 'token');
   }
 
   Future<File> resizeAndCropImage(File file) async {
@@ -92,13 +109,15 @@ class _ScanResultPageState extends State<ScanResultPage> {
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
+        log("Raw JSON response from Predict: $jsonResponse");
 
         predictionResult = PredictionResult.fromJson(jsonResponse);
 
         // Make another API request for the Scan Info Storing
+        await getDiseaseInformation();
         await storeScanResult();
+        widget.refreshAllData();
 
-        log("Response: ${jsonResponse.toString()}");
         setState(() {
           _requestFailed = false;
         });
@@ -109,7 +128,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
         });
       }
     } catch (e) {
-      log("Exception: $e");
+      log("Prediction Exception: $e");
       if (mounted) {
         setState(() {
           _requestFailed = true;
@@ -124,9 +143,55 @@ class _ScanResultPageState extends State<ScanResultPage> {
     }
   }
 
+  Future<void> getDiseaseInformation() async {
+    if (predictionResult == null || scaledImage == null) {
+      log("Prediction result or scaled image is null");
+      return;
+    }
+
+    if (token!.isEmpty) {
+      log("Not authorized");
+      return;
+    }
+
+    try {
+      final response = await http.get(
+        Uri.parse(
+            "http://10.0.2.2:5225/api/disease/search?plant=${predictionResult.plant}&disease=${predictionResult.status}"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        diseaseInfo = DiseaseInfo.fromJson(data[0]);
+      } else {
+        setState(() {
+          _requestFailed = false;
+        });
+      }
+    } catch (e) {
+      log("DiseaseInfo Exception: $e");
+      setState(() {
+        _requestFailed = true;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   Future<void> storeScanResult() async {
     if (predictionResult == null || scaledImage == null) {
       log("Prediction result or scaled image is null");
+      return;
+    }
+
+    if (token!.isEmpty) {
+      log("Not authorized");
       return;
     }
 
@@ -134,6 +199,9 @@ class _ScanResultPageState extends State<ScanResultPage> {
 
     try {
       var request = http.MultipartRequest("POST", Uri.parse(apiUrl));
+
+      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['Content-Type'] = 'multipart/form-data';
 
       request.files.add(await http.MultipartFile.fromPath(
           'Image', scaledImage!.path,
@@ -156,19 +224,9 @@ class _ScanResultPageState extends State<ScanResultPage> {
         });
       } else {
         log("Error storing scan: ${response.statusCode}");
-        setState(() {
-          _requestFailed = true;
-        });
       }
     } catch (e) {
-      log("Exception: $e");
-      setState(() {
-        _requestFailed = true;
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      log("Storing Exception: $e");
     }
   }
 
@@ -219,7 +277,11 @@ class _ScanResultPageState extends State<ScanResultPage> {
                     children: [
                       Text("Confidence: ${predictionResult.confidence}"),
                       Text("Plant: ${predictionResult.plant}"),
-                      Text("Status: ${predictionResult.status}")
+                      Text("Status: ${predictionResult.status}"),
+                      SizedBox(height: 20),
+                      Text("${diseaseInfo.description}"),
+                      Text("${diseaseInfo.treatment}"),
+                      Text("${diseaseInfo.prevention}")
                     ],
                   ),
                 ),
