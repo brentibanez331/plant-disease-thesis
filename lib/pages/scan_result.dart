@@ -6,7 +6,7 @@ import "package:flutter/material.dart";
 import "package:flutter_dotenv/flutter_dotenv.dart";
 import "package:flutter_secure_storage/flutter_secure_storage.dart";
 import "package:image_picker/image_picker.dart";
-import "package:thesis/models/disease_info.dart";
+import "package:thesis/models/disease.dart";
 import "package:thesis/models/prediction_result.dart";
 import "package:thesis/services/plant_predict_service.dart";
 import 'package:http/http.dart' as http;

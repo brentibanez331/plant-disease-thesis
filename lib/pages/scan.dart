@@ -224,10 +224,10 @@ class _ScanPageState extends State<ScanPage> {
                         scrollDirection: Axis.horizontal,
                         itemCount: 3,
                         itemBuilder: (context, index) {
-                          final items = widget.scans.value![index];
+                          final scan = widget.scans.value![index];
                           return GestureDetector(
                             onLongPress: () {
-                              _showOptionsDialog(items.id);
+                              _showOptionsDialog(scan.id);
                             },
                             child: SizedBox(
                               width: 200,
@@ -240,7 +240,13 @@ class _ScanPageState extends State<ScanPage> {
                                 color: AppColors.primary,
                                 child: GestureDetector(
                                   onTap: () {
-                                    debugPrint('Tapped Current');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ScanPreviousPage(scan: scan),
+                                      ),
+                                    );
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(bottom: 8.0),
@@ -258,7 +264,7 @@ class _ScanPageState extends State<ScanPage> {
                                           ),
                                           child: Image(
                                             image: NetworkImage(
-                                                "http://10.0.2.2:5225${items.imageFilePath}"),
+                                                "http://10.0.2.2:5225${scan.imageFilePath}"),
                                             height: 100,
                                             width: double.maxFinite,
                                             fit: BoxFit.cover,
@@ -273,7 +279,7 @@ class _ScanPageState extends State<ScanPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                items.plant,
+                                                scan.plant,
                                                 style: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 20,
@@ -292,13 +298,13 @@ class _ScanPageState extends State<ScanPage> {
                                                         horizontal: 4,
                                                         vertical: 2),
                                                 child: Text(
-                                                  items.diseaseType,
+                                                  scan.diseaseType,
                                                   style: const TextStyle(
                                                       color: Colors.white),
                                                 ),
                                               ),
                                               SizedBox(height: 4),
-                                              Text(items.daysAgo),
+                                              Text(scan.daysAgo),
                                             ],
                                           ),
                                         ),
@@ -361,7 +367,8 @@ class _ScanPageState extends State<ScanPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ScanPreviousPage(),
+                                    builder: (context) =>
+                                        ScanPreviousPage(scan: scan),
                                   ),
                                 );
                               },

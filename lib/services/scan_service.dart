@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:thesis/models/disease.dart';
 import 'package:thesis/models/scans.dart';
 import 'package:http/http.dart' as http;
 
@@ -59,6 +60,32 @@ class ScanService {
     } catch (e) {
       debugPrint("$e");
       return false;
+    }
+  }
+
+  static Future<DiseaseInfo?> getDiseaseInfoFromScan(
+      String plant, String disease) async {
+    try {
+      String? token = await storage.read(key: "token");
+
+      final response = await http.get(
+          Uri.parse(
+              "http://10.0.2.2:5225/api/disease/search?plant=${plant}&disease=${disease}"),
+          headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        DiseaseInfo diseaseInfo = DiseaseInfo.fromJson(data[0]);
+
+        return diseaseInfo;
+      } else {
+        debugPrint("${response.statusCode}");
+      }
+
+      return null;
+    } catch (e) {
+      debugPrint("Get Disease From Scan FAIL $e");
+      return null;
     }
   }
 }
