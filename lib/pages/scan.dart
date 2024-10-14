@@ -13,8 +13,8 @@ class ScanPage extends StatefulWidget {
   final ValueNotifier<List<Scan>?> scans;
   final VoidCallback refreshAllData;
 
-  const ScanPage({Key? key, required this.scans, required this.refreshAllData})
-      : super(key: key);
+  const ScanPage(
+      {super.key, required this.scans, required this.refreshAllData});
 
   @override
   _ScanPageState createState() => _ScanPageState();
@@ -126,7 +126,9 @@ class _ScanPageState extends State<ScanPage> {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: EdgeInsets.only(top: 20.0),
+                    padding: EdgeInsets.only(
+                      top: 20.0,
+                    ),
                     child: Text(
                       "Recent Scans",
                       style:
@@ -136,7 +138,7 @@ class _ScanPageState extends State<ScanPage> {
                 ),
               ),
               SizedBox(
-                height: 200,
+                height: 210,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: buttonTitles.length,
@@ -150,7 +152,8 @@ class _ScanPageState extends State<ScanPage> {
                             debugPrint('Tapped Current');
                           },
                           child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding:
+                                const EdgeInsets.only(bottom: 8.0, top: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -183,42 +186,6 @@ class _ScanPageState extends State<ScanPage> {
                   },
                 ),
               ),
-
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   child: Row(
-              //     children: [
-              //       Containerwidgets().historyButton(
-              //           context,
-              //           'img/leafSample.jpeg',
-              //           'Tomato Blight',
-              //           'Tomato',
-              //           160,
-              //           200),
-              //       Containerwidgets().historyButton(
-              //           context,
-              //           'img/leafSample.jpeg',
-              //           'Banana Blight',
-              //           'Tomato',
-              //           160,
-              //           200),
-              //       Containerwidgets().historyButton(
-              //           context,
-              //           'img/leafSample.jpeg',
-              //           'Grape Blight',
-              //           'Tomato',
-              //           160,
-              //           200),
-              //       Containerwidgets().historyButton(
-              //           context,
-              //           'img/leafSample.jpeg',
-              //           'Apple Blight',
-              //           'Tomato',
-              //           160,
-              //           200)
-              //     ],
-              //   ),
-              // ),
               SizedBox(
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -248,6 +215,7 @@ class _ScanPageState extends State<ScanPage> {
                 ),
               ),
               ValueListenableBuilder(
+                  //make this separate from the others so that only this will be scrollable leaving the other components to be static
                   valueListenable: widget.scans,
                   builder: (context, scans, _) {
                     if (scans != null) {
@@ -257,7 +225,6 @@ class _ScanPageState extends State<ScanPage> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             final items = widget.scans.value![index];
-
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 4.0),
                                 child: Card(
@@ -286,7 +253,7 @@ class _ScanPageState extends State<ScanPage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(items.plant,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 20)),
@@ -295,19 +262,20 @@ class _ScanPageState extends State<ScanPage> {
                                                           color:
                                                               AppColors.danger,
                                                           borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
+                                                              const BorderRadius
+                                                                  .all(Radius
                                                                       .circular(
                                                                           4))),
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 4,
-                                                              vertical: 2),
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 4,
+                                                          vertical: 2),
                                                       child: Text(
-                                                          "${items.diseaseType}",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white))),
+                                                          items.diseaseType,
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .white))),
                                                 ],
                                               )
                                             ],

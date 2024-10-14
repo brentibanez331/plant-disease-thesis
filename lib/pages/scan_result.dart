@@ -19,11 +19,10 @@ class ScanResultPage extends StatefulWidget {
   final VoidCallback refreshAllData;
 
   const ScanResultPage(
-      {Key? key,
+      {super.key,
       required this.xImage,
       this.newPrediction = true,
-      required this.refreshAllData})
-      : super(key: key);
+      required this.refreshAllData});
 
   @override
   _ScanResultPageState createState() => _ScanResultPageState();
@@ -144,7 +143,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
   }
 
   Future<void> getDiseaseInformation() async {
-    if (predictionResult == null || scaledImage == null) {
+    if (scaledImage == null) {
       log("Prediction result or scaled image is null");
       return;
     }
@@ -185,7 +184,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
   }
 
   Future<void> storeScanResult() async {
-    if (predictionResult == null || scaledImage == null) {
+    if (scaledImage == null) {
       log("Prediction result or scaled image is null");
       return;
     }
@@ -278,10 +277,10 @@ class _ScanResultPageState extends State<ScanResultPage> {
                       Text("Confidence: ${predictionResult.confidence}"),
                       Text("Plant: ${predictionResult.plant}"),
                       Text("Status: ${predictionResult.status}"),
-                      SizedBox(height: 20),
-                      Text("${diseaseInfo.description}"),
-                      Text("${diseaseInfo.treatment}"),
-                      Text("${diseaseInfo.prevention}")
+                      const SizedBox(height: 20),
+                      Text(diseaseInfo.description),
+                      Text(diseaseInfo.treatment),
+                      Text(diseaseInfo.prevention)
                     ],
                   ),
                 ),

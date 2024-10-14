@@ -10,7 +10,7 @@ import 'package:thesis/pages/community.dart';
 import 'package:thesis/services/scan_service.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  const Dashboard({super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -18,7 +18,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int currentPageIndex = 0;
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   late String? token;
   late String? userId;
 

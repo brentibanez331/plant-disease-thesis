@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:thesis/pages/comments.dart';
 
 class Community extends StatefulWidget {
-  const Community({Key? key}) : super(key: key);
+  const Community({super.key});
 
   @override
   _CommunityState createState() => _CommunityState();

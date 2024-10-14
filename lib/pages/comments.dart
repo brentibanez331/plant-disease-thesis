@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Comments extends StatefulWidget {
-  const Comments({Key? key}) : super(key: key);
+  const Comments({super.key});
 
   @override
   _CommentsState createState() => _CommentsState();
@@ -9,6 +9,7 @@ class Comments extends StatefulWidget {
 
 class _CommentsState extends State<Comments> {
   bool isExpanded = false; // State to track if text is expanded
+  bool isLiked = false; // State to track if liked
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class _CommentsState extends State<Comments> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '1d' + ' ⋅ ' + '12k views',
+                        '1d ⋅ 12k views',
                         style: TextStyle(color: Colors.grey[600], fontSize: 12),
                       ),
                     ],
@@ -50,7 +51,6 @@ class _CommentsState extends State<Comments> {
                 ],
               ),
             ),
-            // Reduced padding between the profile and title text
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Align(
@@ -68,11 +68,9 @@ class _CommentsState extends State<Comments> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Use Text with "See more" functionality
                   Text(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-                    maxLines:
-                        isExpanded ? null : 3, // Show more lines if expanded
+                    maxLines: isExpanded ? null : 3,
                     overflow: isExpanded
                         ? TextOverflow.visible
                         : TextOverflow.ellipsis,
@@ -80,7 +78,7 @@ class _CommentsState extends State<Comments> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        isExpanded = !isExpanded; // Toggle expanded state
+                        isExpanded = !isExpanded;
                       });
                     },
                     child: Text(
@@ -89,6 +87,149 @@ class _CommentsState extends State<Comments> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 15, top: 12.0, bottom: 12, right: 15),
+              child: Row(
+                children: [
+                  Container(
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.grey[300]!,
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        // Like Button
+                        SizedBox(
+                          height: 32,
+                          child: InkWell(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              bottomLeft: Radius.circular(16),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                isLiked = !isLiked;
+                              });
+                            },
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    isLiked
+                                        ? Icons.thumb_up_alt
+                                        : Icons.thumb_up_alt_outlined,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '100',
+                                    style: TextStyle(
+                                        color: Colors.grey[600], fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          height: 20,
+                          width: 1,
+                          color: Colors.grey[300],
+                        ),
+                        // Comment Button
+                        SizedBox(
+                          height: 32,
+                          child: InkWell(
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                            onTap: () {},
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12.0),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.comment, size: 18),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '49',
+                                    style: TextStyle(
+                                        color: Colors.grey[600], fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  // Share Button
+                  Container(
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.grey[300]!,
+                        width: 1,
+                      ),
+                    ),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16.0),
+                      onTap: () {
+                        print('Share button pressed');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.share, size: 18),
+                            const SizedBox(width: 4),
+                            Text(
+                              'Share',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 10,
+              width: double.infinity,
+              color: Colors.grey[300],
+            ),
+            // Wrap ListView.builder with Expanded
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10, // Limit the number of items to display
+                itemBuilder: (BuildContext context, int index) {
+                  return const Column(
+                    children: [
+                      Padding(padding: EdgeInsets.all(8)),
+                      Text('halo')
+                    ],
+                  );
+                },
               ),
             ),
           ],

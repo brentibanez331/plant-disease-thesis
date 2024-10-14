@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:thesis/pages/auth/login.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:thesis/pages/dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +17,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: LoginPage(),
-      // home: Dashboard(),
+      //home: Dashboard(),
       debugShowCheckedModeBanner: false,
     );
   }
