@@ -8,6 +8,7 @@ import 'package:thesis/pages/home.dart';
 import 'package:thesis/pages/scan.dart';
 import 'package:thesis/pages/community.dart';
 import 'package:thesis/services/scan_service.dart';
+import 'package:thesis/utils/colors.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -86,7 +87,7 @@ class _DashboardState extends State<Dashboard> {
               // automaticallyImplyLeading: false,
               title: const Text("Dashboard"),
               foregroundColor: Colors.white,
-              backgroundColor: Colors.blue,
+              backgroundColor: AppColors.secondary,
               actions: [
                 PopupMenuButton(
                   onSelected: (value) {

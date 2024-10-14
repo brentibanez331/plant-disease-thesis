@@ -5,10 +5,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:thesis/models/scans.dart';
 import 'package:http/http.dart' as http;
 
 class ScanService {
+  static const storage = FlutterSecureStorage();
+
   static Future<List<Scan>?> getAllScans(String token, String userId) async {
     try {
       final response = await http.get(
@@ -35,6 +39,26 @@ class ScanService {
     } catch (e) {
       log("Scan Retrieval Error: $e");
       return null;
+    }
+  }
+
+  static Future<bool> deleteScan(int scanId) async {
+    try {
+      String? token = await storage.read(key: "token");
+
+      final response = await http.delete(
+          Uri.parse("http://10.0.2.2:5225/api/scan/delete/$scanId"),
+          headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+      if (response.statusCode != 204) {
+        return false;
+      }
+
+      debugPrint("SCAN deleted");
+      return true;
+    } catch (e) {
+      debugPrint("$e");
+      return false;
     }
   }
 }

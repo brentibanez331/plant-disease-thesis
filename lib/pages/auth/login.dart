@@ -184,8 +184,7 @@ class _LoginState extends State<LoginPage> {
                           child: ElevatedButton(
                             onPressed: _verifyPhoneNumber,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 114, 191, 120),
+                              backgroundColor: AppColors.secondary,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
