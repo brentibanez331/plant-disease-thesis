@@ -6,12 +6,14 @@ import "package:flutter/material.dart";
 import "package:flutter_dotenv/flutter_dotenv.dart";
 import "package:flutter_secure_storage/flutter_secure_storage.dart";
 import "package:image_picker/image_picker.dart";
+import "package:intl/intl.dart";
 import "package:thesis/models/disease.dart";
 import "package:thesis/models/prediction_result.dart";
 import "package:thesis/services/plant_predict_service.dart";
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:image/image.dart' as img;
+import "package:thesis/utils/colors.dart";
 
 class ScanResultPage extends StatefulWidget {
   final XFile xImage;
@@ -35,6 +37,8 @@ class _ScanResultPageState extends State<ScanResultPage> {
   bool _requestFailed = false;
   late PredictionResult predictionResult;
   late DiseaseInfo diseaseInfo;
+  var dateFormatter = DateFormat('MMM d, h:mm a');
+
   static const storage = FlutterSecureStorage();
   late String? token;
 
@@ -235,73 +239,118 @@ class _ScanResultPageState extends State<ScanResultPage> {
       appBar: AppBar(title: const Text("Results")),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.file(image!,
-                    height: 200, width: double.maxFinite, fit: BoxFit.cover),
-              ),
+          padding: const EdgeInsets.symmetric(horizontal: 0.0),
+          child: SingleChildScrollView(
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.file(image!,
+                    height: 300, width: double.maxFinite, fit: BoxFit.cover),
 
-              // While Loading, show a progress indicator
-              if (_isLoading)
-                const Expanded(
-                    child: Center(child: CircularProgressIndicator())),
+                // While Loading, show a progress indicator
+                if (_isLoading)
+                  const Expanded(
+                      child: Center(child: CircularProgressIndicator())),
 
-              // Show a retry button if request fails in any case
-              if (_requestFailed)
-                Expanded(
-                    child: Center(
-                        child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.warning, color: Colors.red, size: 50),
-                    const Text("Please try again"),
-                    ElevatedButton(
-                        child: const Text("Retry"),
-                        onPressed: () async {
-                          await predictDisease(image);
-                        }),
-                  ],
-                ))),
-
-              // Show results
-              if (!_requestFailed && !_isLoading)
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                // Show a retry button if request fails in any case
+                if (_requestFailed)
+                  Expanded(
+                      child: Center(
+                          child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Confidence: ${predictionResult.confidence}"),
-                      Text("Plant: ${predictionResult.plant}"),
-                      Text("Status: ${predictionResult.status}"),
-                      const SizedBox(height: 20),
-                      Text(diseaseInfo.description),
-                      Text(diseaseInfo.treatment),
-                      Text(diseaseInfo.prevention)
+                      const Icon(Icons.warning, color: Colors.red, size: 50),
+                      const Text("Please try again"),
+                      ElevatedButton(
+                          child: const Text("Retry"),
+                          onPressed: () async {
+                            await predictDisease(image);
+                          }),
                     ],
-                  ),
-                ),
+                  ))),
 
-              // ------------- IMPORTANT!!! -----------------
-              // Build dummy data here for stylings
-              // Comment the API request predictDisease() in the initState
-              // Comment all elements with conditional renderings
-              // Don't forget to update the original result widgets and delete this...
-              // const Padding(
-              //   padding: EdgeInsets.all(16.0),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Text("Confidence: 99.99%"),
-              //       Text("Plant: Potato"),
-              //       Text("Status: Northern Leaf Blight")
-              //     ],
-              //   ),
-              // )
-            ],
+                // Show results
+                if (!_requestFailed && !_isLoading) ...[
+                  SizedBox(height: 10),
+                  Text(
+                    predictionResult.plant,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.danger.withOpacity(0.8),
+                      borderRadius: const BorderRadius.all(Radius.circular(4)),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    child: Text(
+                      predictionResult.status,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(dateFormatter.format(DateTime.now())),
+                  ...[
+                    Padding(
+                      // <-- Make sure this is a list of Widgets
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("DESCRIPTION",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(diseaseInfo!.description),
+                          SizedBox(height: 20),
+                          Text("TREATMENT",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(diseaseInfo!.treatment),
+                          SizedBox(height: 20),
+                          Text("HOW TO PREVENT?",
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(diseaseInfo!.prevention),
+                        ],
+                      ),
+                    )
+                  ]
+                ]
+
+                // Padding(
+                //   padding: const EdgeInsets.all(16.0),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text("Confidence: ${predictionResult.confidence}"),
+                //       Text("Plant: ${predictionResult.plant}"),
+                //       Text("Status: ${predictionResult.status}"),
+                //       const SizedBox(height: 20),
+                //       Text(diseaseInfo.description),
+                //       Text(diseaseInfo.treatment),
+                //       Text(diseaseInfo.prevention)
+                //     ],
+                //   ),
+                // ),
+
+                // ------------- IMPORTANT!!! -----------------
+                // Build dummy data here for stylings
+                // Comment the API request predictDisease() in the initState
+                // Comment all elements with conditional renderings
+                // Don't forget to update the original result widgets and delete this...
+                // const Padding(
+                //   padding: EdgeInsets.all(16.0),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Text("Confidence: 99.99%"),
+                //       Text("Plant: Potato"),
+                //       Text("Status: Northern Leaf Blight")
+                //     ],
+                //   ),
+                // )
+              ],
+            ),
           ),
         ),
       ),
