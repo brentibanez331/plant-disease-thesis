@@ -70,15 +70,15 @@ class _AddPostState extends State<AddPost> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (bool didPop, Object? result) async {
-        if (didPop) {
-          return;
-        }
-        final result = await _showExitDialog();
-        if (result && context.mounted) {
-          Navigator.of(context).pop();
-        }
-      },
+      // onPopInvokedWithResult: (bool didPop, Object? result) async {
+      //   if (didPop) {
+      //     return;
+      //   }
+      //   final result = await _showExitDialog();
+      //   if (result && context.mounted) {
+      //     Navigator.of(context).pop();
+      //   }
+      // },
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Create New Post'),

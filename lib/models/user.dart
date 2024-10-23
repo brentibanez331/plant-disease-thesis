@@ -1,13 +1,13 @@
 class UserModel {
   final int id;
   final String phoneNumber;
-  final String email;
+  final String? email;
   final String firstName;
   final String lastName;
   final String username;
 
   UserModel({
-    required this.email,
+    this.email,
     required this.firstName,
     required this.lastName,
     required this.id,
