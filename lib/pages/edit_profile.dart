@@ -73,6 +73,8 @@ class _EditProfileState extends State<EditProfile> {
         }
 
         var response = await request.send();
+        var responseBody = await response.stream.bytesToString();
+        debugPrint("Response body: $responseBody");
 
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -80,19 +82,18 @@ class _EditProfileState extends State<EditProfile> {
             backgroundColor: Colors.green, // Change color if needed
           ));
 
-          var responseBody = await response.stream.bytesToString();
           var jsonResponse = jsonDecode(responseBody);
 
-          log("Profile Updated successfully: ${jsonResponse.toString()}");
-          updatedUser = UserModel.fromJson(jsonResponse['user']);
-          // setState(() {
-          //   _requestFailed = false;
-          // });
+          updatedUser = UserModel.fromJson(jsonResponse);
 
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => Dashboard(user: updatedUser)));
+
+          // setState(() {
+          //   _requestFailed = false;
+          // });
         } else {
           log("Error updating profile: ${response.statusCode}");
         }

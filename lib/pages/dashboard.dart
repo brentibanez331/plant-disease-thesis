@@ -120,7 +120,7 @@ class _DashboardState extends State<Dashboard> {
             children: [
               HomePage(user: widget.user),
               ScanPage(scans: scans, refreshAllData: getAllData),
-              const Community(),
+              Community(user: widget.user),
             ],
           ),
           bottomNavigationBar: NavigationBar(

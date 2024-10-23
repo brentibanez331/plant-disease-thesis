@@ -219,103 +219,109 @@ class _ScanPageState extends State<ScanPage> {
                 valueListenable: widget.scans,
                 builder: (context, scans, _) {
                   if (scans != null) {
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        final scan = widget.scans.value![index];
-                        return GestureDetector(
-                          onLongPress: () {
-                            _showOptionsDialog(scan.id);
-                          },
-                          child: SizedBox(
-                            width: 200,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                // Apply border radius to the entire card
-                                borderRadius: BorderRadius.circular(
-                                    12), // Adjust radius as needed
-                              ),
-                              color: AppColors.primary,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ScanPreviousPage(scan: scan),
-                                    ),
-                                  );
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      // Wrap the Image in a ClipRRect to apply border radius to it as well
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(
-                                              12), // Match card's radius
-                                          topRight: Radius.circular(
-                                              12), // Match card's radius
-                                        ),
-                                        child: Image(
-                                          image: NetworkImage(
-                                              "http://10.0.2.2:5225${scan.imageFilePath}"),
-                                          height: 100,
-                                          width: double.maxFinite,
-                                          fit: BoxFit.cover,
-                                        ),
+                    if (scans.isNotEmpty) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: scans.length < 3 ? scans.length : 3,
+                        itemBuilder: (context, index) {
+                          final scan = widget.scans.value![index];
+                          return GestureDetector(
+                            onLongPress: () {
+                              _showOptionsDialog(scan.id);
+                            },
+                            child: SizedBox(
+                              width: 200,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  // Apply border radius to the entire card
+                                  borderRadius: BorderRadius.circular(
+                                      12), // Adjust radius as needed
+                                ),
+                                color: AppColors.primary,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ScanPreviousPage(scan: scan),
                                       ),
-                                      const SizedBox(height: 10),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              scan.plant,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: AppColors.danger
-                                                    .withOpacity(0.8),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(4)),
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 4,
-                                                      vertical: 2),
-                                              child: Text(
-                                                scan.diseaseType,
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Wrap the Image in a ClipRRect to apply border radius to it as well
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(
+                                                12), // Match card's radius
+                                            topRight: Radius.circular(
+                                                12), // Match card's radius
+                                          ),
+                                          child: Image(
+                                            image: NetworkImage(
+                                                "http://10.0.2.2:5225${scan.imageFilePath}"),
+                                            height: 100,
+                                            width: double.maxFinite,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                scan.plant,
                                                 style: const TextStyle(
-                                                    color: Colors.white),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(height: 4),
-                                            Text(scan.daysAgo),
-                                          ],
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.danger
+                                                      .withOpacity(0.8),
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                          Radius.circular(4)),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4,
+                                                        vertical: 2),
+                                                child: Text(
+                                                  scan.diseaseType,
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              SizedBox(height: 4),
+                                              Text(scan.daysAgo),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    );
+                          );
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: Text("No recent scans available."),
+                      );
+                    }
                   } else {
                     // Handle the case where scans is null (e.g., show a loading indicator)
                     return const Center(child: CircularProgressIndicator());
@@ -356,89 +362,97 @@ class _ScanPageState extends State<ScanPage> {
                   valueListenable: widget.scans,
                   builder: (context, scans, _) {
                     if (scans != null) {
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: 5,
-                          // physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            final scan = widget.scans.value![index];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ScanPreviousPage(scan: scan),
-                                  ),
-                                );
-                              },
-                              onLongPress: () {
-                                _showOptionsDialog(scan.id);
-                              },
-                              child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 4.0),
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      // Apply border radius to the entire card
-                                      borderRadius: BorderRadius.circular(
-                                          12), // Adjust radius as needed
+                      if (scans.isNotEmpty) {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: scans.length < 5 ? scans.length : 5,
+                            // physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              final scan = widget.scans.value![index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ScanPreviousPage(scan: scan),
                                     ),
-                                    color: AppColors.primary,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 16.0, horizontal: 8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    "http://10.0.2.2:5225${scan.imageFilePath}"),
-                                                radius: 25,
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Column(
-                                                // mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  // PLANT NAME
-                                                  Text(scan.plant,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 16)),
-                                                  Container(
-                                                      decoration: BoxDecoration(
-                                                          color: AppColors.danger
-                                                              .withOpacity(0.8),
-                                                          borderRadius:
-                                                              const BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      4))),
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 4,
-                                                          vertical: 2),
-                                                      child: Text(
-                                                          scan.diseaseType,
-                                                          style: const TextStyle(
-                                                              color: Colors
-                                                                  .white))),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          Text(dateFormatter
-                                              .format(scan.createdAt))
-                                        ],
+                                  );
+                                },
+                                onLongPress: () {
+                                  _showOptionsDialog(scan.id);
+                                },
+                                child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 4.0),
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        // Apply border radius to the entire card
+                                        borderRadius: BorderRadius.circular(
+                                            12), // Adjust radius as needed
                                       ),
-                                    ),
-                                  )),
-                            );
-                          });
+                                      color: AppColors.primary,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 16.0, horizontal: 8),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                CircleAvatar(
+                                                  backgroundImage: NetworkImage(
+                                                      "http://10.0.2.2:5225${scan.imageFilePath}"),
+                                                  radius: 25,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Column(
+                                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    // PLANT NAME
+                                                    Text(scan.plant,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 16)),
+                                                    Container(
+                                                        decoration: BoxDecoration(
+                                                            color: AppColors
+                                                                .danger
+                                                                .withOpacity(
+                                                                    0.8),
+                                                            borderRadius:
+                                                                const BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        4))),
+                                                        padding:
+                                                            const EdgeInsets.symmetric(
+                                                                horizontal: 4,
+                                                                vertical: 2),
+                                                        child: Text(
+                                                            scan.diseaseType,
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white))),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            Text(dateFormatter
+                                                .format(scan.createdAt))
+                                          ],
+                                        ),
+                                      ),
+                                    )),
+                              );
+                            });
+                      } else {
+                        return const Center(
+                          child: Text("No scans available."),
+                        );
+                      }
                     } else {
                       // Handle the case where scans is null (e.g., show a loading indicator)
                       return const Center(child: CircularProgressIndicator());

@@ -5,15 +5,16 @@ class UserModel {
   final String firstName;
   final String lastName;
   final String username;
+  final String? profileImage;
 
-  UserModel({
-    this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.id,
-    required this.phoneNumber,
-    required this.username,
-  });
+  UserModel(
+      {this.email,
+      required this.firstName,
+      required this.lastName,
+      required this.id,
+      required this.phoneNumber,
+      required this.username,
+      this.profileImage});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -23,6 +24,7 @@ class UserModel {
       username: json['username'] ?? '',
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
+      profileImage: json['profileImageFilePath'] ?? '',
     );
   }
 }
