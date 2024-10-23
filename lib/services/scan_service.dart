@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 class ScanService {
   static const storage = FlutterSecureStorage();
 
-  static Future<List<Scan>?> getAllScans(String token, String userId) async {
+  static Future<List<Scan>?> getAllScans(String token, int userId) async {
     try {
       final response = await http.get(
         Uri.parse("http://10.0.2.2:5225/api/scan/search?userId=$userId"),

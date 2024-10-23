@@ -271,10 +271,11 @@ class _ScanResultPageState extends State<ScanResultPage> {
 
                 // Show results
                 if (!_requestFailed && !_isLoading) ...[
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     predictionResult.plant,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -288,7 +289,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(dateFormatter.format(DateTime.now())),
@@ -300,17 +301,17 @@ class _ScanResultPageState extends State<ScanResultPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("DESCRIPTION",
+                          const Text("DESCRIPTION",
                               style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(diseaseInfo!.description),
-                          SizedBox(height: 20),
-                          Text("TREATMENT",
+                          Text(diseaseInfo.description),
+                          const SizedBox(height: 20),
+                          const Text("TREATMENT",
                               style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(diseaseInfo!.treatment),
-                          SizedBox(height: 20),
-                          Text("HOW TO PREVENT?",
+                          Text(diseaseInfo.treatment),
+                          const SizedBox(height: 20),
+                          const Text("HOW TO PREVENT?",
                               style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(diseaseInfo!.prevention),
+                          Text(diseaseInfo.prevention),
                         ],
                       ),
                     )

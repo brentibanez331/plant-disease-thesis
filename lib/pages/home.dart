@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:thesis/models/user.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final UserModel user;
+
+  const HomePage({super.key, required this.user});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -14,10 +17,10 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(20),
             child: Text(
-              'Hello, Name',
+              'Hello, ${widget.user.firstName}',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
           ),

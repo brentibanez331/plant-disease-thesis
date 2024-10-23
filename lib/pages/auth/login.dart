@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:thesis/models/user.dart';
 import 'package:thesis/pages/dashboard.dart';
+import 'package:thesis/pages/edit_profile.dart';
 import 'package:thesis/services/firebase_service.dart';
 import 'package:thesis/utils/colors.dart';
 
@@ -14,6 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginState extends State<LoginPage> {
   TextEditingController phoneNumberController = TextEditingController();
   String? _verificationId;
+  late UserModel? user;
 
   @override
   void initState() {
@@ -78,15 +81,24 @@ class _LoginState extends State<LoginPage> {
   Future<void> _signInWithOtp(String otp) async {
     try {
       Navigator.of(context).pop();
-      bool success =
+      UserModel? user =
           await FirebaseAuthService.signInWithOTP(_verificationId!, otp);
-      if (success) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const Dashboard(),
-          ),
-        );
+      if (user != null) {
+        if (user.firstName.isNotEmpty && user.lastName.isNotEmpty) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Dashboard(user: user),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const EditProfile(),
+            ),
+          );
+        }
       }
     } catch (e) {
       log('OTP verification failed: $e');

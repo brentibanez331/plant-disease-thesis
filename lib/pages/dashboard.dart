@@ -4,6 +4,8 @@ import "package:flutter/material.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:thesis/models/scans.dart';
+import 'package:thesis/models/user.dart';
+import 'package:thesis/pages/auth/login.dart';
 import 'package:thesis/pages/home.dart';
 import 'package:thesis/pages/scan.dart';
 import 'package:thesis/pages/community.dart';
@@ -11,7 +13,9 @@ import 'package:thesis/services/scan_service.dart';
 import 'package:thesis/utils/colors.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final UserModel user;
+
+  const Dashboard({super.key, required this.user});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -37,7 +41,6 @@ class _DashboardState extends State<Dashboard> {
 
   void getStorageAndFetchData() async {
     token = await storage.read(key: 'token');
-    userId = await storage.read(key: 'userId');
     if (token == null) {
       return;
     }
@@ -47,7 +50,8 @@ class _DashboardState extends State<Dashboard> {
   void getAllData() async {
     log("GETTING ALL DATA!!!!!");
     try {
-      final fetchedScans = await ScanService.getAllScans(token!, userId!);
+      final fetchedScans =
+          await ScanService.getAllScans(token!, widget.user.id);
 
       setState(() {
         scans.value = fetchedScans;
@@ -69,7 +73,10 @@ class _DashboardState extends State<Dashboard> {
     try {
       await FirebaseAuth.instance.signOut(); // Sign out the user
       // Navigate back to the login screen or any other screen
-      Navigator.pushReplacementNamed(context, '/auth/login');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
     } catch (e) {
       // Handle any errors that might occur during sign out
       ScaffoldMessenger.of(context).showSnackBar(
@@ -111,7 +118,7 @@ class _DashboardState extends State<Dashboard> {
           body: IndexedStack(
             index: currentPageIndex,
             children: [
-              const HomePage(),
+              HomePage(user: widget.user),
               ScanPage(scans: scans, refreshAllData: getAllData),
               const Community(),
             ],
