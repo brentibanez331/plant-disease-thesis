@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thesis/pages/comments.dart';
+import 'package:thesis/pages/add_post.dart';
 
 class Community extends StatefulWidget {
   const Community({super.key});
@@ -18,7 +19,10 @@ class _CommunityState extends State<Community> {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         backgroundColor: const Color.fromARGB(255, 63, 133, 231),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AddPost()));
+        },
         child: const Icon(
           Icons.add,
           color: Colors.white,
