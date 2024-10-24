@@ -28,7 +28,6 @@ class _AddPostState extends State<AddPost> {
 
   void updateSelectedPicture(String path) {
     setState(() {
-      picture = path;
       pictureFile = File(path);
       hasImage = true;
     });
@@ -68,106 +67,138 @@ class _AddPostState extends State<AddPost> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      // onPopInvokedWithResult: (bool didPop, Object? result) async {
-      //   if (didPop) {
-      //     return;
-      //   }
-      //   final result = await _showExitDialog();
-      //   if (result && context.mounted) {
-      //     Navigator.of(context).pop();
-      //   }
-      // },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Create New Post'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                debugPrint("Shared");
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Text(
-                  "Share",
-                  style: TextStyle(fontSize: 20, color: AppColors.secondary),
-                ),
-              ),
-            )
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Create New Post'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () async {
+            final shouldExit = await _showExitDialog();
+            if (shouldExit && context.mounted) {
+              Navigator.of(context).pop();
+            }
+          },
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
+        actions: [
+          TextButton(
+            onPressed: () {
+              debugPrint("Shared");
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
+              child: Text(
+                "Share",
+                style: TextStyle(fontSize: 20, color: AppColors.secondary),
+              ),
+            ),
+          )
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          counterText: "",
+                          border: InputBorder.none,
+                          hintText: 'Title',
+                          hintStyle: TextStyle(fontSize: 30)),
+                      style: TextStyle(fontSize: 30),
+                      maxLines: null,
+                      maxLength: 100,
+                    ),
+                  ),
+                  if (hasImage)
+                    Stack(
+                      children: [
+                        Container(
+                          color: Colors.black, // Solid black background
+                          width: MediaQuery.of(context).size.width,
+                          child: Image.file(
+                            pictureFile!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            height: 36,
+                            width: 36,
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(160, 0, 0, 0),
+                              shape: BoxShape.circle,
+                            ),
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              constraints:
+                                  const BoxConstraints(), // Removes default padding
+                              icon: const Icon(
+                                Icons.clear_rounded,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  hasImage = false;
+                                });
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  const SizedBox(height: 5),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Body text(Optional)'),
+                      maxLines: null,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+              color: AppColors.secondary,
+              height: 50,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Title',
-                            hintStyle: TextStyle(fontSize: 30)),
-                        style: TextStyle(fontSize: 30),
-                        maxLines: null,
-                        maxLength: 100,
+                    IconButton(
+                      onPressed: _openGallery,
+                      icon: const Icon(
+                        Icons.image_outlined,
+                        size: 30,
+                        color: Colors.black,
                       ),
                     ),
-                    if (hasImage) //convert to image
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Image.file(pictureFile!),
-                      ),
-                    const SizedBox(height: 5),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Body text(Optional)'),
-                        maxLines: null,
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const IconButton(
+                      onPressed: null,
+                      icon: Icon(
+                        Icons.camera,
+                        size: 30,
+                        color: Colors.black,
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            Container(
-                color: AppColors.secondary,
-                height: 50,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: _openGallery,
-                        icon: const Icon(
-                          Icons.image_outlined,
-                          size: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const IconButton(
-                        onPressed: null,
-                        icon: Icon(
-                          Icons.camera,
-                          size: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-          ],
-        ),
+              )),
+        ],
       ),
     );
   }
