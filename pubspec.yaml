@@ -29,6 +29,10 @@ flutter:
   assets:
     - .env
 
+    - assets/fonts/InriaSerif-Regular.ttf
     - img/leafSample.jpeg
     - img/logo.png
     - img/camera.jpg
+    - img/homepage.png
+    - img/corn.jpeg
+    - img/tomato.jpeg
