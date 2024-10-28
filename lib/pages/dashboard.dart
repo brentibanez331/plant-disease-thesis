@@ -69,6 +69,12 @@ class _DashboardState extends State<Dashboard> {
         });
   }
 
+  void setPageIndex(int page) {
+    setState(() {
+      currentPageIndex = page;
+    });
+  }
+
   Future<void> _logout() async {
     try {
       await FirebaseAuth.instance.signOut(); // Sign out the user
@@ -118,7 +124,10 @@ class _DashboardState extends State<Dashboard> {
           body: IndexedStack(
             index: currentPageIndex,
             children: [
-              HomePage(user: widget.user),
+              HomePage(
+                user: widget.user,
+                setPageIndex: setPageIndex,
+              ),
               ScanPage(scans: scans, refreshAllData: getAllData),
               Community(user: widget.user),
             ],

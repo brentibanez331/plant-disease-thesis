@@ -5,12 +5,12 @@ import 'package:thesis/widgets/circleContainerWidgets.dart';
 import 'package:thesis/widgets/offerCardWidgets.dart';
 import 'package:thesis/pages/plantInfo/corn_data.dart';
 import 'package:thesis/pages/plantInfo/tomato_data.dart';
-import 'package:thesis/pages/community.dart';
+import 'package:thesis/pages/dashboard.dart';
 
 class HomePage extends StatefulWidget {
   final UserModel user;
-
-  const HomePage({super.key, required this.user});
+  final Function(int) setPageIndex;
+  const HomePage({super.key, required this.user, required this.setPageIndex});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -99,16 +99,20 @@ class _HomePageState extends State<HomePage> {
                 "Check What We Offer!",
                 style: TextStyle(fontSize: 20),
               ),
-              const OfferCardWidgets(
-                imagePaths: [
+              OfferCardWidgets(
+                action: [
+                  () => widget.setPageIndex(2),
+                  () => widget.setPageIndex(1)
+                ],
+                imagePaths: const [
                   'img/homepage.png',
                   'img/homepage.png',
                 ],
-                titles: [
+                titles: const [
                   'Community Page',
                   'Identify and Treat Diseases',
                 ],
-                subText: [
+                subText: const [
                   'Like · Share · Comment',
                   'Picture · Send · Identify',
                 ],
