@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thesis/utils/colors.dart';
 
 class OfferCardWidgets extends StatelessWidget {
   final List<String> imagePaths;
@@ -53,9 +54,8 @@ class OfferCardWidgets extends StatelessWidget {
                         ),
                         Text(
                           subText[index],
-                          style: const TextStyle(
-                              fontSize: 14,
-                              color: Color.fromARGB(255, 179, 179, 179)),
+                          style:
+                              TextStyle(fontSize: 14, color: AppColors.subText),
                         ),
                       ],
                     ),

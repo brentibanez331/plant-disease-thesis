@@ -3,6 +3,9 @@ import 'package:thesis/models/user.dart';
 import 'package:thesis/widgets/collectionWidgets.dart';
 import 'package:thesis/widgets/circleContainerWidgets.dart';
 import 'package:thesis/widgets/offerCardWidgets.dart';
+import 'package:thesis/pages/plantInfo/corn_data.dart';
+import 'package:thesis/pages/plantInfo/tomato_data.dart';
+import 'package:thesis/pages/community.dart';
 
 class HomePage extends StatefulWidget {
   final UserModel user;
@@ -37,7 +40,10 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 4,
                   ),
-                  Text("patrickjohn243") //${widget.user.userName}
+                  Text(
+                    "patrickjohn243",
+                    style: TextStyle(color: Color.fromARGB(255, 179, 179, 179)),
+                  ) //${widget.user.userName}
                 ],
               ),
               const SizedBox(
@@ -52,12 +58,12 @@ class _HomePageState extends State<HomePage> {
                 mainTexts: [
                   'Get Started with',
                   'Check our latest',
-                  'Check our latest',
+                  'Interact with the',
                 ],
                 titleTexts: [
                   'Agronex',
                   'Updates',
-                  'Updates',
+                  'Community',
                 ],
               ),
               const SizedBox(
@@ -69,7 +75,13 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 20,
                 ),
               ),
-              const CircleContainerWidgets(imagePaths: [
+              const CircleContainerWidgets(pageContext: [
+                CornData(),
+                TomatoData(),
+                CornData(),
+                CornData(),
+                CornData(),
+              ], imagePaths: [
                 'img/corn.jpeg',
                 'img/tomato.jpeg',
                 'img/corn.jpeg',
@@ -91,17 +103,14 @@ class _HomePageState extends State<HomePage> {
                 imagePaths: [
                   'img/homepage.png',
                   'img/homepage.png',
-                  'img/homepage.png',
                 ],
                 titles: [
                   'Community Page',
                   'Identify and Treat Diseases',
-                  'Special Offer 3',
                 ],
                 subText: [
                   'Like · Share · Comment',
                   'Picture · Send · Identify',
-                  'erer',
                 ],
               ),
             ],

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CircleContainerWidgets extends StatelessWidget {
+  final List<Widget> pageContext;
   final List<String> imagePaths;
   final List<String> foodNames;
 
   const CircleContainerWidgets({
     super.key,
+    required this.pageContext,
     required this.imagePaths,
     required this.foodNames,
   });
@@ -27,18 +29,26 @@ class CircleContainerWidgets extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(right: 16),
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 35, // Adjust size as needed
-                    backgroundColor: Colors.white,
-                    backgroundImage: AssetImage(imagePaths[index]),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    foodNames[index],
-                  ),
-                ],
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => pageContext[index]));
+                },
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 35, // Adjust size as needed
+                      backgroundColor: Colors.white,
+                      backgroundImage: AssetImage(imagePaths[index]),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      foodNames[index],
+                    ),
+                  ],
+                ),
               ),
             );
           },
