@@ -43,8 +43,8 @@ class _CollectionButtonState extends State<CollectionButton> {
     }
 
     return Container(
-      width: 370,
-      height: 160,
+      width: double.infinity,
+      height: 200,
       decoration: const BoxDecoration(),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),

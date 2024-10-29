@@ -98,9 +98,12 @@ class _DashboardState extends State<Dashboard> {
         child: Scaffold(
           appBar: AppBar(
               // automaticallyImplyLeading: false,
-              title: const Text("Dashboard"),
+              title: const Text(
+                "Hi, Brent!",
+                style: TextStyle(color: Colors.black, fontSize: 24),
+              ),
               foregroundColor: Colors.white,
-              backgroundColor: AppColors.secondary,
+              backgroundColor: Colors.transparent,
               actions: [
                 PopupMenuButton(
                   onSelected: (value) {
@@ -110,7 +113,10 @@ class _DashboardState extends State<Dashboard> {
                       //_settings();
                     }
                   },
-                  icon: const Icon(Icons.more_vert),
+                  icon: const Icon(
+                    Icons.more_vert,
+                    color: Colors.black,
+                  ),
                   itemBuilder: (BuildContext context) {
                     return [
                       const PopupMenuItem(

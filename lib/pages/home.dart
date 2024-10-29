@@ -21,33 +21,19 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Hello, ${widget.user.firstName}' "!",
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const Row(
-                children: [
-                  Icon(
-                    Icons.account_box_rounded,
-                    size: 16,
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    "patrickjohn243",
-                    style: TextStyle(color: Color.fromARGB(255, 179, 179, 179)),
-                  ) //${widget.user.userName}
-                ],
-              ),
+              // Text(
+              //   'Hello, ${widget.user.firstName}' "!",
+              //   style:
+              //       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              // ),
+
               const SizedBox(
-                height: 16,
+                height: 100,
               ),
               const CollectionButton(
                 imagePaths: [
@@ -84,9 +70,9 @@ class _HomePageState extends State<HomePage> {
               ], imagePaths: [
                 'img/corn.jpeg',
                 'img/tomato.jpeg',
-                'img/corn.jpeg',
-                'img/tomato.jpeg',
-                'img/corn.jpeg',
+                'img/potato.png',
+                'img/grapes.png',
+                'img/apples.png',
               ], foodNames: [
                 'Corn',
                 'Tomato',
