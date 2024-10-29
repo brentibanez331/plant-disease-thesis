@@ -6,6 +6,7 @@ import 'package:thesis/widgets/offerCardWidgets.dart';
 import 'package:thesis/pages/plantInfo/corn_data.dart';
 import 'package:thesis/pages/plantInfo/tomato_data.dart';
 import 'package:thesis/pages/dashboard.dart';
+import 'package:thesis/pages/get_Started.dart';
 
 class HomePage extends StatefulWidget {
   final UserModel user;
@@ -26,30 +27,54 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text(
-              //   'Hello, ${widget.user.firstName}' "!",
-              //   style:
-              //       const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              // ),
-
+              Text(
+                'Hello, ${widget.user.firstName}' "!",
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.account_box_rounded,
+                    size: 16,
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    widget.user.username,
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 179, 179, 179)),
+                  ) //${widget.user.userName}
+                ],
+              ),
               const SizedBox(
                 height: 100,
               ),
-              const CollectionButton(
-                imagePaths: [
-                  'img/homepage.png',
+              CollectionButton(
+                action: [
+                  () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GetStarted(),
+                      )),
+                  () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GetStarted(),
+                      ))
+                ],
+                imagePaths: const [
                   'img/homepage.png',
                   'img/homepage.png',
                 ],
-                mainTexts: [
+                mainTexts: const [
                   'Get Started with',
                   'Check our latest',
-                  'Interact with the',
                 ],
-                titleTexts: [
+                titleTexts: const [
                   'Agronex',
                   'Updates',
-                  'Community',
                 ],
               ),
               const SizedBox(
@@ -64,9 +89,6 @@ class _HomePageState extends State<HomePage> {
               const CircleContainerWidgets(pageContext: [
                 CornData(),
                 TomatoData(),
-                CornData(),
-                CornData(),
-                CornData(),
               ], imagePaths: [
                 'img/corn.jpeg',
                 'img/tomato.jpeg',
@@ -76,9 +98,6 @@ class _HomePageState extends State<HomePage> {
               ], foodNames: [
                 'Corn',
                 'Tomato',
-                'Potato',
-                'Grapes',
-                'Apple',
               ]),
               const SizedBox(height: 10),
               const Text(
