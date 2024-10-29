@@ -17,12 +17,14 @@ class _CollectionWidgetsState extends State<CollectionWidgets> {
 }
 
 class CollectionButton extends StatefulWidget {
+  final List<VoidCallback> action;
   final List<String> imagePaths;
   final List<String> mainTexts;
   final List<String> titleTexts;
 
   const CollectionButton({
     super.key,
+    required this.action,
     required this.imagePaths,
     required this.mainTexts,
     required this.titleTexts,
@@ -59,45 +61,48 @@ class _CollectionButtonState extends State<CollectionButton> {
                 });
               },
               itemBuilder: (context, index) {
-                return Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(widget.imagePaths[index]),
-                          fit: BoxFit.cover,
+                return GestureDetector(
+                  onTap: widget.action[index],
+                  child: Stack(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(widget.imagePaths[index]),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.mainTexts[index],
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                              fontFamily: 'InriaSerif-Regular',
-                            ),
-                          ),
-                          Text(
-                            widget.titleTexts[index],
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontFamily: 'InriaSerif-Regular',
-                            ),
-                          ),
-                        ],
+                      Container(
+                        color: Colors.black.withOpacity(0.5),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.mainTexts[index],
+                              style: const TextStyle(
+                                fontSize: 22,
+                                color: Colors.white,
+                                fontFamily: 'InriaSerif-Regular',
+                              ),
+                            ),
+                            Text(
+                              widget.titleTexts[index],
+                              style: const TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontFamily: 'InriaSerif-Regular',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
