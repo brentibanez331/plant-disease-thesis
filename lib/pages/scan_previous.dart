@@ -4,6 +4,7 @@ import "package:thesis/models/disease.dart";
 import "package:thesis/models/scans.dart";
 import "package:thesis/services/scan_service.dart";
 import "package:thesis/utils/colors.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ScanPreviousPage extends StatefulWidget {
   final Scan scan;
@@ -47,7 +48,7 @@ class _ScanPreviousState extends State<ScanPreviousPage> {
                   children: [
                     Image(
                       image: NetworkImage(
-                          "http://10.0.2.2:5225${widget.scan.imageFilePath}"),
+                          "${dotenv.env['ROOT_DOMAIN']}${widget.scan.imageFilePath}"),
                       height: 300,
                       width: double.maxFinite,
                       fit: BoxFit.cover,

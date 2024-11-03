@@ -10,6 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:thesis/models/disease.dart';
 import 'package:thesis/models/scans.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ScanService {
   static const storage = FlutterSecureStorage();
@@ -17,7 +18,8 @@ class ScanService {
   static Future<List<Scan>?> getAllScans(String token, int userId) async {
     try {
       final response = await http.get(
-        Uri.parse("http://10.0.2.2:5225/api/scan/search?userId=$userId"),
+        Uri.parse(
+            "${dotenv.env['ROOT_DOMAIN']}/api/scan/search?userId=$userId"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
         },
@@ -48,7 +50,7 @@ class ScanService {
       String? token = await storage.read(key: "token");
 
       final response = await http.delete(
-          Uri.parse("http://10.0.2.2:5225/api/scan/delete/$scanId"),
+          Uri.parse("${dotenv.env['ROOT_DOMAIN']}/api/scan/delete/$scanId"),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
 
       if (response.statusCode != 204) {
@@ -70,7 +72,7 @@ class ScanService {
 
       final response = await http.get(
           Uri.parse(
-              "http://10.0.2.2:5225/api/disease/search?plant=${plant}&disease=${disease}"),
+              "${dotenv.env['ROOT_DOMAIN']}/api/disease/search?plant=${plant}&disease=${disease}"),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
 
       if (response.statusCode == 200) {

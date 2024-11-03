@@ -13,6 +13,7 @@ import "package:thesis/services/plant_predict_service.dart";
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:image/image.dart' as img;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import "package:thesis/utils/colors.dart";
 
 class ScanResultPage extends StatefulWidget {
@@ -41,6 +42,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
 
   static const storage = FlutterSecureStorage();
   late String? token;
+  late String? userId;
 
   // var dateFormatter = DateFormat('MMM d, yyyy');
   // var dateTimeFormatter = DateFormat('MMMM d, yyyy - hh:mm:ss a');
@@ -58,6 +60,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
 
   Future<void> getToken() async {
     token = await storage.read(key: 'token');
+    userId = await storage.read(key: 'userId');
   }
 
   Future<File> resizeAndCropImage(File file) async {
@@ -160,7 +163,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            "http://10.0.2.2:5225/api/disease/search?plant=${predictionResult.plant}&disease=${predictionResult.status}"),
+            "${dotenv.env['ROOT_DOMAIN']}/api/disease/search?plant=${predictionResult.plant}&disease=${predictionResult.status}"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer $token",
         },
@@ -198,7 +201,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
       return;
     }
 
-    const apiUrl = "http://10.0.2.2:5225/api/scan/add";
+    var apiUrl = "${dotenv.env['ROOT_DOMAIN']}/api/scan/add";
 
     try {
       var request = http.MultipartRequest("POST", Uri.parse(apiUrl));
@@ -210,7 +213,7 @@ class _ScanResultPageState extends State<ScanResultPage> {
           'Image', scaledImage!.path,
           filename: path.basename(scaledImage!.path)));
 
-      request.fields['UserId'] = "1";
+      request.fields['UserId'] = userId!;
       request.fields['Plant'] = predictionResult.plant;
       request.fields['Disease'] = predictionResult.status;
       request.fields['Confidence'] = predictionResult.confidence.toString();

@@ -9,6 +9,7 @@ import 'package:thesis/services/scan_service.dart';
 import 'package:thesis/utils/colors.dart';
 import 'package:thesis/widgets/containerWidgets.dart';
 import "package:intl/intl.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ScanPage extends StatefulWidget {
   final ValueNotifier<List<Scan>?> scans;
@@ -264,7 +265,7 @@ class _ScanPageState extends State<ScanPage> {
                                           ),
                                           child: Image(
                                             image: NetworkImage(
-                                                "http://10.0.2.2:5225${scan.imageFilePath}"),
+                                                "${dotenv.env['ROOT_DOMAIN']}${scan.imageFilePath}"),
                                             height: 100,
                                             width: double.maxFinite,
                                             fit: BoxFit.cover,
@@ -402,7 +403,7 @@ class _ScanPageState extends State<ScanPage> {
                                               children: [
                                                 CircleAvatar(
                                                   backgroundImage: NetworkImage(
-                                                      "http://10.0.2.2:5225${scan.imageFilePath}"),
+                                                      "${dotenv.env['ROOT_DOMAIN']}${scan.imageFilePath}"),
                                                   radius: 25,
                                                 ),
                                                 const SizedBox(width: 10),

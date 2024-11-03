@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:thesis/models/user.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class FirebaseAuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -50,7 +51,7 @@ class FirebaseAuthService {
     // Invoke an API request
     try {
       final response = await http.post(
-        Uri.parse("http://10.0.2.2:5225/api/auth/associate-phone"),
+        Uri.parse("${dotenv.env['ROOT_DOMAIN']}/api/auth/associate-phone"),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -69,6 +70,8 @@ class FirebaseAuthService {
         // Handle successful response, such as storing the token or navigating to another screen
         log(responseData['token']);
         await storage.write(key: "token", value: responseData['token']);
+        await storage.write(
+            key: "userId", value: responseData['user']['id'].toString());
         // await storage.write(
         //     key: "userId", value: (responseData['user']['id']).toString());
 
@@ -107,7 +110,7 @@ class FirebaseAuthService {
 //       return;
 //     }
 
-//     const apiUrl = "http://10.0.2.2:5225/api/scan/add";
+//     const apiUrl = "http://agronex.somee.com/api/scan/add";
 
 //     try {
 //       var request = http.MultipartRequest("POST", Uri.parse(apiUrl));
