@@ -95,7 +95,10 @@ class _LoginState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => EditProfile(user: user),
+              builder: (context) => EditProfile(
+                user: user,
+                isNewUser: true,
+              ),
             ),
           );
         }

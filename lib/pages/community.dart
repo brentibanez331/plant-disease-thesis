@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:thesis/models/user.dart';
 import 'package:thesis/pages/comments.dart';
 import 'package:thesis/pages/add_post.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Community extends StatefulWidget {
   final UserModel user;
@@ -43,18 +44,18 @@ class _CommunityState extends State<Community> {
                   borderRadius: BorderRadius.circular(50), // Match the radius
                   child: Image(
                     image: NetworkImage(
-                        "http://10.0.2.2:5225${widget.user.profileImage}"),
-                    height: 50,
-                    width: 50,
+                        "${dotenv.env['ROOT_DOMAIN']}${widget.user.profileImage}"),
+                    height: 40,
+                    width: 40,
                     fit: BoxFit.cover, // Adjust the fit as needed
                   ),
                 ),
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Expanded(
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Colors.black38)),
-                    child: Align(
+                        side: const BorderSide(color: Colors.black38)),
+                    child: const Align(
                       alignment:
                           Alignment.centerLeft, // Aligns text to the left
                       child: Text(
@@ -65,13 +66,14 @@ class _CommunityState extends State<Community> {
                     onPressed: () {},
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 IconButton(
-                    onPressed: () {}, icon: Icon(Icons.photo_album_rounded))
+                    onPressed: () {},
+                    icon: const Icon(Icons.photo_album_rounded))
               ],
             ),
           ),
-          Container(height: 3, color: Colors.black26),
+          // Container(height: 3, color: Colors.black26),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(8),

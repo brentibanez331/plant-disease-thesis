@@ -9,11 +9,14 @@ import "package:thesis/pages/dashboard.dart";
 import "package:thesis/utils/colors.dart";
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EditProfile extends StatefulWidget {
   final UserModel user;
+  final bool isNewUser;
 
-  const EditProfile({Key? key, required this.user}) : super(key: key);
+  const EditProfile({Key? key, required this.user, required this.isNewUser})
+      : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -52,23 +55,25 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       String apiUrl =
-          "http://10.0.2.2:5225/api/auth/update-user/${widget.user.id}";
+          "${dotenv.env['ROOT_DOMAIN']}/api/auth/update-user/${widget.user.id}";
 
       try {
         var request = http.MultipartRequest("PUT", Uri.parse(apiUrl));
 
         request.headers['Content-Type'] = 'multipart/form-data';
 
-        request.files.add(await http.MultipartFile.fromPath(
-            'Image', _image!.path,
-            filename: path.basename(_image!.path)));
+        if (_image != null) {
+          request.files.add(await http.MultipartFile.fromPath(
+              'Image', _image!.path,
+              filename: path.basename(_image!.path)));
+        }
 
         request.fields['FirstName'] = _firstNameController.text;
         request.fields['LastName'] = _lastNameController.text;
 
         request.fields['Username'] = _usernameController.text;
 
-        if (_emailController.text.isNotEmpty) {
+        if (_emailController.text != "") {
           request.fields['Email'] = _emailController.text;
         }
 
@@ -107,6 +112,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: true,
           actions: [
             TextButton(onPressed: () {}, child: const Text("Skip for now"))
           ],
@@ -148,21 +154,35 @@ class _EditProfileState extends State<EditProfile> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(99),
                         child: Container(
-                          width: 200,
-                          height: 200,
+                          width: 150,
+                          height: 150,
                           color: Colors.black12,
                           child: _image != null
                               ? Image.file(
                                   _image!,
                                   fit: BoxFit.cover,
                                 )
-                              : const Center(
-                                  child: Text(
-                                    "Upload your Image",
-                                    style: TextStyle(fontSize: 20),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
+                              : widget.user.profileImage != ""
+                                  ? Image(
+                                      image: NetworkImage(
+                                          "${dotenv.env['ROOT_DOMAIN']}${widget.user.profileImage}"),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : const Center(
+                                      child: Text(
+                                        "Upload your Image",
+                                        style: TextStyle(fontSize: 16),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+
+                          // const Center(
+                          //     child: Text(
+                          //       "Upload your Image",
+                          //       style: TextStyle(fontSize: 16),
+                          //       textAlign: TextAlign.center,
+                          //     ),
+                          //   ),
                         ),
                       ),
                     ),

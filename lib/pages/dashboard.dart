@@ -7,6 +7,7 @@ import 'package:thesis/models/scans.dart';
 import 'package:thesis/models/user.dart';
 import 'package:thesis/pages/auth/login.dart';
 import 'package:thesis/pages/home.dart';
+import 'package:thesis/pages/profile.dart';
 import 'package:thesis/pages/scan.dart';
 import 'package:thesis/pages/community.dart';
 import 'package:thesis/services/scan_service.dart';
@@ -75,95 +76,82 @@ class _DashboardState extends State<Dashboard> {
     });
   }
 
-  Future<void> _logout() async {
-    try {
-      await FirebaseAuth.instance.signOut(); // Sign out the user
-      // Navigate back to the login screen or any other screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
-    } catch (e) {
-      // Handle any errors that might occur during sign out
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Logout failed: $e')),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Material(
-        child: Scaffold(
-          appBar: AppBar(
-              // automaticallyImplyLeading: false,
-              title: const Text(
-                "Hi, Brent!",
-                style: TextStyle(color: Colors.black, fontSize: 24),
-              ),
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.transparent,
-              actions: [
-                PopupMenuButton(
-                  onSelected: (value) {
-                    if (value == 'Logout') {
-                      _logout();
-                    } else if (value == 'Settings') {
-                      //_settings();
-                    }
-                  },
-                  icon: const Icon(
-                    Icons.more_vert,
-                    color: Colors.black,
-                  ),
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      const PopupMenuItem(
-                          value: "Logout", child: Text("Logout")),
-                      const PopupMenuItem(
-                          value: "Settings", child: Text("Settings"))
-                    ];
-                  },
-                )
-              ]),
-          body: IndexedStack(
-            index: currentPageIndex,
-            children: [
-              HomePage(
-                user: widget.user,
-                setPageIndex: setPageIndex,
-              ),
-              ScanPage(scans: scans, refreshAllData: getAllData),
-              Community(user: widget.user),
-            ],
-          ),
-          bottomNavigationBar: NavigationBar(
-            onDestinationSelected: (index) {
-              setState(() {
-                currentPageIndex = index;
-                debugPrint(currentPageIndex.toString());
-              });
-            },
-            selectedIndex: currentPageIndex,
-            destinations: const [
-              NavigationDestination(
-                icon: Icon(Icons.home_outlined),
-                label: 'Home',
-                selectedIcon: Icon(Icons.home),
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.camera),
-                label: 'Scan',
-                selectedIcon: Icon(Icons.camera_outlined),
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.chat),
-                label: 'Community',
-                selectedIcon: Icon(Icons.chat_outlined),
-              ),
-            ],
-          ),
+      child: Scaffold(
+        // appBar: AppBar(
+        //     title: const Text(
+        //       "Hi, Brent!",
+        //       style: TextStyle(color: Colors.black, fontSize: 24),
+        //     ),
+        //     foregroundColor: Colors.white,
+        //     backgroundColor: Colors.transparent,
+        //     actions: [
+        //       PopupMenuButton(
+        //         onSelected: (value) {
+        //           if (value == 'Logout') {
+        //             _logout();
+        //           } else if (value == 'Settings') {
+        //             //_settings();
+        //           }
+        //         },
+        //         icon: const Icon(
+        //           Icons.more_vert,
+        //           color: Colors.black,
+        //         ),
+        //         itemBuilder: (BuildContext context) {
+        //           return [
+        //             const PopupMenuItem(
+        //                 value: "Logout", child: Text("Logout")),
+        //             const PopupMenuItem(
+        //                 value: "Settings", child: Text("Settings"))
+        //           ];
+        //         },
+        //       )
+        //     ]),
+        body: IndexedStack(
+          index: currentPageIndex,
+          children: [
+            HomePage(
+              user: widget.user,
+              setPageIndex: setPageIndex,
+            ),
+            ScanPage(scans: scans, refreshAllData: getAllData),
+            Community(user: widget.user),
+            ProfilePage(user: widget.user)
+          ],
+        ),
+        bottomNavigationBar: NavigationBar(
+          onDestinationSelected: (index) {
+            setState(() {
+              currentPageIndex = index;
+              debugPrint(currentPageIndex.toString());
+            });
+          },
+          selectedIndex: currentPageIndex,
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.home_outlined),
+              label: 'Home',
+              selectedIcon: Icon(Icons.home),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.camera),
+              label: 'Scan',
+              selectedIcon: Icon(Icons.camera_outlined),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.chat),
+              label: 'Community',
+              selectedIcon: Icon(Icons.chat_outlined),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+              selectedIcon: Icon(Icons.person_outlined),
+            )
+          ],
         ),
       ),
     );

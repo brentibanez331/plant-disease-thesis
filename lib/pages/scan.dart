@@ -133,7 +133,15 @@ class _ScanPageState extends State<ScanPage> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              "Scan your Disease",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
@@ -342,11 +350,10 @@ class _ScanPageState extends State<ScanPage> {
                         children: [
                           Text(
                             "Previous 30 Days",
-                            // style:
-                            //     TextStyle(fontSize: 20),
                           ),
-                          SizedBox(width: 10),
-                          Icon(Icons.info_outline)
+                          SizedBox(width: 4),
+                          Icon(Icons.info_outline,
+                              size: 20, color: Colors.black54)
                         ],
                       ),
                       TextButton(
