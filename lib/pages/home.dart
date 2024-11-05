@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               const SizedBox(
-                height: 100,
+                height: 40,
               ),
               CollectionButton(
                 action: [
@@ -89,6 +89,9 @@ class _HomePageState extends State<HomePage> {
               const CircleContainerWidgets(pageContext: [
                 CornData(),
                 TomatoData(),
+                TomatoData(),
+                TomatoData(),
+                TomatoData(),
               ], imagePaths: [
                 'img/corn.jpeg',
                 'img/tomato.jpeg',
@@ -98,6 +101,9 @@ class _HomePageState extends State<HomePage> {
               ], foodNames: [
                 'Corn',
                 'Tomato',
+                'Potato',
+                'Grapes',
+                'Apples',
               ]),
               const SizedBox(height: 10),
               const Text(
