@@ -5,7 +5,6 @@ import 'package:thesis/widgets/circleContainerWidgets.dart';
 import 'package:thesis/widgets/offerCardWidgets.dart';
 import 'package:thesis/pages/plantInfo/corn_data.dart';
 import 'package:thesis/pages/plantInfo/tomato_data.dart';
-import 'package:thesis/pages/dashboard.dart';
 import 'package:thesis/pages/get_Started.dart';
 
 class HomePage extends StatefulWidget {

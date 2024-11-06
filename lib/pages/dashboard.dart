@@ -3,13 +3,16 @@ import 'dart:developer';
 import "package:flutter/material.dart";
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:thesis/models/post.dart';
 import 'package:thesis/models/scans.dart';
 import 'package:thesis/models/user.dart';
 import 'package:thesis/pages/auth/login.dart';
 import 'package:thesis/pages/home.dart';
+import 'package:thesis/pages/library.dart';
 import 'package:thesis/pages/profile.dart';
 import 'package:thesis/pages/scan.dart';
 import 'package:thesis/pages/community.dart';
+import 'package:thesis/services/community_service.dart';
 import 'package:thesis/services/scan_service.dart';
 import 'package:thesis/utils/colors.dart';
 
@@ -33,6 +36,7 @@ class _DashboardState extends State<Dashboard> {
   // ];
 
   final scans = ValueNotifier<List<Scan>?>([]);
+  final posts = ValueNotifier<List<Post>?>([]);
 
   @override
   void initState() {
@@ -53,9 +57,11 @@ class _DashboardState extends State<Dashboard> {
     try {
       final fetchedScans =
           await ScanService.getAllScans(token!, widget.user.id);
+      final fetchedPosts = await CommunityService.getAllPosts(token!);
 
       setState(() {
         scans.value = fetchedScans;
+        posts.value = fetchedPosts;
       });
     } catch (e) {
       log("[Exception] $e: Error in Retrieving Data");
@@ -118,7 +124,8 @@ class _DashboardState extends State<Dashboard> {
               setPageIndex: setPageIndex,
             ),
             ScanPage(scans: scans, refreshAllData: getAllData),
-            Community(user: widget.user),
+            LibraryPage(),
+            Community(user: widget.user, posts: posts),
             ProfilePage(user: widget.user)
           ],
         ),
@@ -140,6 +147,11 @@ class _DashboardState extends State<Dashboard> {
               icon: Icon(Icons.camera),
               label: 'Scan',
               selectedIcon: Icon(Icons.camera_outlined),
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.book),
+              label: 'Library',
+              selectedIcon: Icon(Icons.book_outlined),
             ),
             NavigationDestination(
               icon: Icon(Icons.chat),

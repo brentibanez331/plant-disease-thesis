@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
   flutter_dotenv: ^5.1.0
   flutter_secure_storage: ^9.2.2
+  flutter_spinkit: ^5.2.1
   http: ^1.2.2
   image: ^4.2.0
   image_picker: ^1.1.2
@@ -39,3 +40,5 @@ flutter:
     - img/grapes.png
     - img/apples.png
     - img/placeholder.png
+    - img/potato_lib.jpg
+    - img/

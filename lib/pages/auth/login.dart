@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:thesis/models/user.dart';
 import 'package:thesis/pages/dashboard.dart';
 import 'package:thesis/pages/edit_profile.dart';
@@ -17,6 +18,7 @@ class _LoginState extends State<LoginPage> {
   TextEditingController phoneNumberController = TextEditingController();
   String? _verificationId;
   late UserModel? user;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -32,6 +34,9 @@ class _LoginState extends State<LoginPage> {
   }
 
   Future<void> _verifyPhoneNumber() async {
+    setState(() {
+      isLoading = true;
+    });
     FirebaseAuthService.verifyPhoneNumber(
       phoneNumberController.text,
       onCodeSent: (String verificationId) {
@@ -43,6 +48,12 @@ class _LoginState extends State<LoginPage> {
       },
       onVerificationFailed: (String errorMessage) {
         log('Verification failed: $errorMessage');
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
       },
     );
   }
@@ -68,7 +79,6 @@ class _LoginState extends State<LoginPage> {
                 if (_verificationId != null) {
                   await _signInWithOtp(otp);
                 }
-                // Navigator.of(context).pop();
               },
               child: const Text('Verify'),
             ),
@@ -83,6 +93,11 @@ class _LoginState extends State<LoginPage> {
       Navigator.of(context).pop();
       UserModel? user =
           await FirebaseAuthService.signInWithOTP(_verificationId!, otp);
+
+      setState(() {
+        isLoading = false;
+      });
+
       if (user != null) {
         if (user.firstName.isNotEmpty && user.lastName.isNotEmpty) {
           Navigator.pushReplacement(
@@ -100,6 +115,9 @@ class _LoginState extends State<LoginPage> {
                 isNewUser: true,
               ),
             ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Sign in failed. Please try again.")),
           );
         }
       }
@@ -197,7 +215,7 @@ class _LoginState extends State<LoginPage> {
                           width: 170,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: _verifyPhoneNumber,
+                            onPressed: isLoading ? null : _verifyPhoneNumber,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.secondary,
                               foregroundColor: Colors.white,
@@ -206,12 +224,17 @@ class _LoginState extends State<LoginPage> {
                                     50), // Adjustable border radius
                               ),
                             ),
-                            child: const Text(
-                              "Continue", // Button text
-                              style: TextStyle(
-                                fontSize: 16,
-                              ), // Adjust button text size
-                            ),
+                            child: isLoading
+                                ? const SpinKitThreeBounce(
+                                    color: Colors.white,
+                                    size: 16,
+                                  )
+                                : const Text(
+                                    "Continue", // Button text
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ), // Adjust button text size
+                                  ),
                           ),
                         ),
                       ),
