@@ -1,12 +1,9 @@
 import 'dart:developer';
-
 import "package:flutter/material.dart";
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:thesis/models/post.dart';
 import 'package:thesis/models/scans.dart';
 import 'package:thesis/models/user.dart';
-import 'package:thesis/pages/auth/login.dart';
 import 'package:thesis/pages/home.dart';
 import 'package:thesis/pages/library.dart';
 import 'package:thesis/pages/profile.dart';
@@ -14,7 +11,6 @@ import 'package:thesis/pages/scan.dart';
 import 'package:thesis/pages/community.dart';
 import 'package:thesis/services/community_service.dart';
 import 'package:thesis/services/scan_service.dart';
-import 'package:thesis/utils/colors.dart';
 
 class Dashboard extends StatefulWidget {
   final UserModel user;
@@ -42,6 +38,7 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     getStorageAndFetchData();
     // getAllData();
+    super.initState();
   }
 
   void getStorageAndFetchData() async {

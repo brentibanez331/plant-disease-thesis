@@ -1,6 +1,7 @@
 import "dart:io";
 
 import 'package:flutter/material.dart';
+import "package:thesis/services/camera_service.dart";
 import "package:thesis/utils/colors.dart";
 import "package:image_picker/image_picker.dart";
 
@@ -106,9 +107,10 @@ class _AddPostState extends State<AddPost> {
                       decoration: InputDecoration(
                           counterText: "",
                           border: InputBorder.none,
-                          hintText: 'Title',
+                          hintText: 'Add a title',
                           hintStyle: TextStyle(fontSize: 30)),
-                      style: TextStyle(fontSize: 30),
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                       maxLines: null,
                       maxLength: 100,
                     ),
@@ -167,8 +169,8 @@ class _AddPostState extends State<AddPost> {
             ),
           ),
           Container(
-              color: AppColors.secondary,
-              height: 50,
+              color: Colors.transparent,
+              height: 75,
               width: double.infinity,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -177,7 +179,9 @@ class _AddPostState extends State<AddPost> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     IconButton(
-                      onPressed: _openGallery,
+                      onPressed: () {
+                        CameraService.pickImageFromGallery();
+                      },
                       icon: const Icon(
                         Icons.image_outlined,
                         size: 30,
@@ -187,10 +191,12 @@ class _AddPostState extends State<AddPost> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const IconButton(
-                      onPressed: null,
+                    IconButton(
+                      onPressed: () {
+                        CameraService.pickImageFromCamera();
+                      },
                       icon: Icon(
-                        Icons.camera,
+                        Icons.camera_alt_outlined,
                         size: 30,
                         color: Colors.black,
                       ),

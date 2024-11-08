@@ -114,7 +114,8 @@ class _EditProfileState extends State<EditProfile> {
         appBar: AppBar(
           automaticallyImplyLeading: true,
           actions: [
-            TextButton(onPressed: () {}, child: const Text("Skip for now"))
+            if (widget.isNewUser)
+              TextButton(onPressed: () {}, child: const Text("Skip for now"))
           ],
         ),
         body: Padding(
@@ -219,11 +220,15 @@ class _EditProfileState extends State<EditProfile> {
                       child: TextFormField(
                         controller: _firstNameController,
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            hintText: "First Name"),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          labelText: "First Name",
+                          labelStyle: TextStyle(
+                            fontSize: 18, // Adjust the font size for the label
+                          ),
+                          // hintText: "First Name"
+                        ),
                         validator: (value) {
                           return null;
                         },
@@ -238,7 +243,11 @@ class _EditProfileState extends State<EditProfile> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
                             ),
-                            hintText: "Last Name"),
+                            labelText: "Last Name",
+                            labelStyle: TextStyle(
+                              fontSize:
+                                  18, // Adjust the font size for the label
+                            )),
                         validator: (value) {
                           return null;
                         },
@@ -250,10 +259,14 @@ class _EditProfileState extends State<EditProfile> {
                 TextFormField(
                   controller: _usernameController,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      hintText: "Username"),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    labelText: "Username",
+                    labelStyle: TextStyle(
+                      fontSize: 18, // Adjust the font size for the label
+                    ),
+                  ),
                   validator: (value) {
                     return null;
                   },
@@ -265,21 +278,27 @@ class _EditProfileState extends State<EditProfile> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
-                      hintText: "Email (optional)"),
+                      labelText: "Email Address",
+                      labelStyle: TextStyle(
+                        fontSize: 18, // Adjust the font size for the label
+                      ),
+                      hintText: "optional"),
                   validator: (value) {
                     return null;
                   },
                 ),
                 // SizedBox(height: 20),
                 Expanded(child: Container()),
-                const Text("By registering, you agree to our Terms of Service"),
+                if (widget.isNewUser)
+                  const Text(
+                      "By registering, you agree to our Terms of Service"),
                 const SizedBox(height: 10),
                 SizedBox(
                     width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
                       onPressed: _updateProfile,
-                      child: const Text("DONE"),
+                      child: Text(widget.isNewUser ? "DONE" : "UPDATE PROFILE"),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondary,
                         foregroundColor: Colors.white,

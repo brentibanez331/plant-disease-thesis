@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:thesis/models/post.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:thesis/utils/colors.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
-  const PostItem({super.key, required this.post});
+  final ValueChanged<bool> onLikeToggle;
+
+  const PostItem({
+    super.key,
+    required this.post,
+    required this.onLikeToggle,
+  });
 
   @override
   _PostItemState createState() => _PostItemState();
 }
 
 class _PostItemState extends State<PostItem> {
+  late bool likedPost; // Declare likedPost here
+
+  @override
+  void initState() {
+    super.initState();
+    likedPost = widget.post.liked; // Initialize it once
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -105,104 +120,86 @@ class _PostItemState extends State<PostItem> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: Colors.grey[300]!,
-                                width: 1,
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // Like Button with InkWell for custom highlight
-                                SizedBox(
-                                  height: 32,
-                                  child: InkWell(
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(16),
-                                      bottomLeft: Radius.circular(16),
-                                    ),
-                                    onTap: () {
-                                      setState(() {
-                                        // isLiked = !isLiked;
-                                      });
-                                    },
-                                    customBorder: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(16),
-                                        bottomLeft: Radius.circular(16),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            // isLiked
-                                            //     ? Icons.thumb_up_alt
-                                            //     :
-                                            Icons.thumb_up_alt_outlined,
-                                            size: 18,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            widget.post.noOfLikes.toString(),
-                                            style: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontSize: 13),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 20,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: likedPost
+                                    ? AppColors.secondary
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: Colors.grey[300]!,
                                   width: 1,
-                                  color: Colors.grey[300],
                                 ),
-                                // Comment Button with InkWell for custom highlight
-                                SizedBox(
-                                  height: 32,
-                                  child: InkWell(
-                                    borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(16),
-                                      bottomRight: Radius.circular(16),
-                                    ),
-                                    onTap: () {
-                                      // navigateToComments(context);
-                                    },
-                                    customBorder: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(16),
-                                        bottomRight: Radius.circular(16),
+                              ),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(16),
+                                onTap: () {
+                                  setState(() {
+                                    likedPost = !likedPost;
+                                    debugPrint(likedPost.toString());
+                                  });
+                                  widget.onLikeToggle(!likedPost);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                          likedPost
+                                              ? Icons.thumb_up_alt
+                                              : Icons.thumb_up_alt_outlined,
+                                          size: 20,
+                                          color: likedPost
+                                              ? Colors.white
+                                              : Colors.black),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        widget.post.noOfLikes.toString(),
+                                        style: TextStyle(
+                                            color: likedPost
+                                                ? Colors.white
+                                                : Colors.grey[600],
+                                            fontSize: 14),
                                       ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12.0),
-                                      child: Row(
-                                        children: [
-                                          const Icon(Icons.comment, size: 18),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            widget.post.noOfComments.toString(),
-                                            style: TextStyle(
-                                                color: Colors.grey[600],
-                                                fontSize: 13),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              )),
+                          SizedBox(width: 10),
+                          Container(
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: Colors.grey[300]!,
+                                  width: 1,
+                                ),
+                              ),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(16),
+                                onTap: () {
+                                  debugPrint("Tapped");
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.chat_outlined,
+                                          size: 20, color: Colors.black),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        widget.post.noOfComments.toString(),
+                                        style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
                         ],
                       ),
                     ),
@@ -255,7 +252,7 @@ class _PostItemState extends State<PostItem> {
             ),
           ),
         ),
-        const Divider(thickness: 1),
+        const Divider(thickness: 1, color: Colors.black12),
       ],
     );
     ;

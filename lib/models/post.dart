@@ -11,6 +11,7 @@ class Post {
   final int noOfComments;
   final DateTime createdAt;
   final String timeDifference;
+  final bool liked;
 
   Post(
       {required this.id,
@@ -22,6 +23,7 @@ class Post {
       required this.noOfLikes,
       required this.noOfComments,
       required this.createdAt,
+      required this.liked,
       required this.timeDifference});
 
   factory Post.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class Post {
         noOfLikes: json['noOfLikes'] ?? 0,
         noOfComments: json['noOfComments'] ?? 0,
         createdAt: DateTime.parse(json['createdAt']),
+        liked: json['liked'],
         timeDifference: json['timeDifference']);
   }
 }

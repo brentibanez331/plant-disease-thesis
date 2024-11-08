@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:thesis/models/post.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:io';
 
 class CommunityService {
   static Future<List<Post>?> getAllPosts(String token) async {
     try {
-      final response = await http
-          .get(Uri.parse("${dotenv.env['ROOT_DOMAIN']}/api/post/search"));
+      final response = await http.get(
+        Uri.parse("${dotenv.env['ROOT_DOMAIN']}/api/post/search"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer $token",
+        },
+      );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
