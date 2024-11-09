@@ -1,6 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:thesis/pages/diseaseLibrary/corn_Library.dart';
+import 'package:thesis/pages/diseaseLibrary/potato_Library.dart';
+import 'package:thesis/pages/diseaseLibrary/pepper_bell_Library.dart';
+import 'package:thesis/pages/diseaseLibrary/tomato_Library.dart';
+import 'package:thesis/pages/diseaseLibrary/grape_Library.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({Key? key}) : super(key: key);
@@ -17,15 +22,15 @@ class _LibraryPageState extends State<LibraryPage> {
           padding: EdgeInsets.all(8),
           child: Column(
             children: [
-              Text(
+              const Text(
                 "Plant Library",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
               ),
-              Text(
+              const Text(
                 "Learn about plant diseases",
                 style: TextStyle(color: Colors.black54),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 18,
               ),
               Expanded(
@@ -36,10 +41,18 @@ class _LibraryPageState extends State<LibraryPage> {
                   mainAxisSpacing: 12,
                   crossAxisCount: 2,
                   children: [
-                    buildImageWithOverlay("img/apples.png", "Apple"),
-                    buildImageWithOverlay("img/potato_lib.jpg", "Potato"),
-                    buildImageWithOverlay("img/apples.png", "Tomato"),
-                    buildImageWithOverlay("img/potato_lib.jpg", "Bell Pepper"),
+                    buildImageWithOverlay(
+                        "img/corn.jpeg", "Corn", const Cornlibrary()),
+                    buildImageWithOverlay(
+                        "img/apples.png", "Apple", const Potatolibrary()),
+                    buildImageWithOverlay(
+                        "img/potato_lib.jpg", "Potato", const Potatolibrary()),
+                    buildImageWithOverlay(
+                        "img/tomato.jpeg", "Tomato", const TomatoLibrary()),
+                    buildImageWithOverlay("img/bell_pepper.jpg", "Bell Pepper",
+                        const PepperBellLibrary()),
+                    buildImageWithOverlay(
+                        "img/grapes.png", "Grapes", const GrapeLibrary()),
                   ],
                 ),
               ),
@@ -48,9 +61,10 @@ class _LibraryPageState extends State<LibraryPage> {
     );
   }
 
-  Widget buildImageWithOverlay(String imagePath, String text) {
+  Widget buildImageWithOverlay(String imagePath, String text, Widget path) {
     return GestureDetector(
       onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => path));
         log(text);
       },
       child: ClipRRect(

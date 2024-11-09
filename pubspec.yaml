@@ -30,6 +30,11 @@ flutter:
   assets:
     - .env
     - assets/fonts/InriaSerif-Regular.ttf
+    - img/diseases_img/Corn/
+    - img/diseases_img/Grape/
+    - img/diseases_img/Pepper_Bell/
+    - img/diseases_img/Potato/
+    - img/diseases_img/Tomato/
     - img/leafSample.jpeg
     - img/logo.png
     - img/camera.jpg
@@ -39,6 +44,7 @@ flutter:
     - img/potato.png
     - img/grapes.png
     - img/apples.png
+    - img/bell_pepper.jpg
     - img/placeholder.png
     - img/potato_lib.jpg
     - img/
