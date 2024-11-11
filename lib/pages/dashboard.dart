@@ -112,18 +112,20 @@ class _DashboardState extends State<Dashboard> {
       //         },
       //       )
       //     ]),
-      body: IndexedStack(
-        index: currentPageIndex,
-        children: [
-          HomePage(
-            user: widget.user,
-            setPageIndex: setPageIndex,
-          ),
-          ScanPage(scans: scans, refreshAllData: getAllData),
-          LibraryPage(),
-          Community(user: widget.user, posts: posts),
-          ProfilePage(user: widget.user)
-        ],
+      body: SafeArea(
+        child: IndexedStack(
+          index: currentPageIndex,
+          children: [
+            HomePage(
+              user: widget.user,
+              setPageIndex: setPageIndex,
+            ),
+            ScanPage(scans: scans, refreshAllData: getAllData),
+            LibraryPage(),
+            Community(user: widget.user, posts: posts),
+            ProfilePage(user: widget.user)
+          ],
+        ),
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (index) {

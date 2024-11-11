@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thesis/utils/colors.dart';
+import 'package:thesis/widgets/fullscreen_image.dart';
 
 Widget infoWidget(String imgPath, String name, String scientificName,
     String description, String treatment, String prevention) {
@@ -11,11 +12,24 @@ Widget infoWidget(String imgPath, String name, String scientificName,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset(
-                  imgPath,
-                  width: double.infinity,
-                  height: 320,
-                  fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FullScreenImage(
+                          imagePath: imgPath,
+                          isImageAsset: true,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Image.asset(
+                    imgPath,
+                    width: double.infinity,
+                    height: 320,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16),

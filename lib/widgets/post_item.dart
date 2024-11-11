@@ -4,6 +4,7 @@ import 'package:thesis/models/post.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:thesis/services/like_service.dart';
 import 'package:thesis/utils/colors.dart';
+import 'package:thesis/widgets/fullscreen_image.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
@@ -136,6 +137,7 @@ class _PostItemState extends State<PostItem> {
                                     builder: (context) => FullScreenImage(
                                       imagePath:
                                           "${dotenv.env['ROOT_DOMAIN']}$imagePath",
+                                      isImageAsset: false,
                                     ),
                                   ),
                                 );
@@ -329,54 +331,6 @@ class _PostItemState extends State<PostItem> {
         ),
         const Divider(thickness: 1, color: Colors.black12),
       ],
-    );
-    ;
-  }
-}
-
-class FullScreenImage extends StatelessWidget {
-  final String imagePath;
-
-  const FullScreenImage({Key? key, required this.imagePath}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        // Use a Stack to position the close button
-        children: <Widget>[
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Center(
-              child: PhotoView(
-                backgroundDecoration: const BoxDecoration(
-                    color: Color.fromRGBO(0, 0, 0, 1)), // True black
-                imageProvider: NetworkImage(imagePath),
-                minScale: PhotoViewComputedScale.contained,
-                maxScale: PhotoViewComputedScale.covered * 2,
-                loadingBuilder: (context, event) =>
-                    const Center(child: CircularProgressIndicator()),
-                errorBuilder: (context, url, error) => const Icon(Icons.error),
-              ),
-            ),
-          ),
-          Positioned(
-            // Position the close button
-            top: 40, // Adjust top padding as needed
-            right: 20, // Adjust right padding as needed
-            child: IconButton(
-              icon: const Icon(
-                Icons.close,
-                color:
-                    Colors.white, // Make the icon white or your preferred color
-                size: 30, // Adjust icon size as needed
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

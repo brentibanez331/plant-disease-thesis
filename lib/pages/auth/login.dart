@@ -299,11 +299,12 @@ class _LoginState extends State<LoginPage> {
                     ),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Padding(padding: EdgeInsets.all(20)),
                           Container(
                             padding: const EdgeInsets.all(18),
                             decoration: BoxDecoration(
@@ -322,8 +323,9 @@ class _LoginState extends State<LoginPage> {
                               ],
                             ),
                           ),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12)),
+                          SizedBox(
+                            width: 10,
+                          ),
                           const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -331,7 +333,7 @@ class _LoginState extends State<LoginPage> {
                                 'Capture',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text('Take a picture of your infected leaf.')
+                              Text('Take a picture of your infected leaf')
                             ],
                           )
                         ],
@@ -340,9 +342,8 @@ class _LoginState extends State<LoginPage> {
                         height: 20,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Padding(padding: EdgeInsets.all(20)),
                           Container(
                             padding: const EdgeInsets.all(18),
                             decoration: BoxDecoration(
@@ -361,8 +362,9 @@ class _LoginState extends State<LoginPage> {
                               ],
                             ),
                           ),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12)),
+                          SizedBox(
+                            width: 10,
+                          ),
                           const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -370,7 +372,7 @@ class _LoginState extends State<LoginPage> {
                                 'Determine',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text('Know the disease through our AI.')
+                              Text('Know the disease through our AI')
                             ],
                           )
                         ],
@@ -400,8 +402,9 @@ class _LoginState extends State<LoginPage> {
                               ],
                             ),
                           ),
-                          const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 12)),
+                          SizedBox(
+                            width: 10,
+                          ),
                           const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -409,7 +412,7 @@ class _LoginState extends State<LoginPage> {
                                 'Treat',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text('Get treatment for your plant.')
+                              Text('Get treatment for your plant')
                             ],
                           )
                         ],
