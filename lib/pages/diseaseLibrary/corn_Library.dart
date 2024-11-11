@@ -22,7 +22,7 @@ class _cornLibraryState extends State<Cornlibrary> {
               child: Column(
                 children: [
                   const Text(
-                    "Potato",
+                    "Corn",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   const Text(
@@ -41,10 +41,10 @@ class _cornLibraryState extends State<Cornlibrary> {
                       crossAxisCount: 2,
                       children: [
                         buildImageWithOverlay(
-                          "img/diseases_img/corn/corn_grayleafspot.jpg",
+                          "img/diseases_img/Corn/corn_grayleafspot.jpg",
                           "Gray Leaf Spot",
                           infoWidget(
-                              "img/diseases_img/corn/corn_grayleafspot.jpg",
+                              "img/diseases_img/Corn/corn_grayleafspot.jpg",
                               "Gray Leaf Spot",
                               "Cercospora zeae-maydis",
                               "Gray leaf spot is caused by the fungus Cercospora zeae-maydis and presents as elongated, gray lesions with dark borders on corn leaves. The lesions can coalesce, leading to significant leaf area loss. This disease typically occurs under warm and humid conditions, making it particularly problematic during wet growing seasons.",
@@ -52,10 +52,10 @@ class _cornLibraryState extends State<Cornlibrary> {
                               "Preventive strategies include rotating crops to reduce inoculum levels in the soil and using resistant corn varieties. Maintaining proper plant spacing improves air circulation, which can help reduce humidity levels around the plants and limit disease spread."),
                         ),
                         buildImageWithOverlay(
-                          "img/diseases_img/corn/corn_northernleafblight.jpg",
+                          "img/diseases_img/Corn/corn_northernleafblight.jpg",
                           "Northern Leaf Blight",
                           infoWidget(
-                              "img/diseases_img/corn/corn_northernleafblight.jpg",
+                              "img/diseases_img/Corn/corn_northernleafblight.jpg",
                               "Northern Leaf Blight",
                               "Exserohilum turcicum",
                               "Northern leaf blight is caused by the fungus Exserohilum turcicum and is identified by long, elliptical grayish-green lesions on corn leaves. These lesions can grow significantly in size and may lead to premature leaf death if not managed properly. The disease thrives in humid conditions and can spread rapidly during wet weather.",

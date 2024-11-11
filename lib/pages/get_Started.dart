@@ -42,14 +42,14 @@ class _OnboardingScreenState extends State<GetStarted> {
     OnboardingPage(
       title: "Diagnose Your Plant",
       description:
-          'Take a Clear Picture of a Diseased Leaf And Upload It.\nOur AI will analyze and suggest potential problems.',
+          'Take a Clear Picture of a Diseased Leaf and\nUpload It. Our AI will analyze and suggest\npotential problems.',
       imagePath: 'img/get_started/placeholder2.png',
       buttonText: 'Next',
     ),
     OnboardingPage(
       title: "Get Treatment Recommendations",
       description:
-          "We'll provide tailored advice and treatment options\nbased on your plant's diagnosis.",
+          "We'll provide tailored advice and treatment\noptions based on your plant's diagnosis.",
       imagePath: 'img/get_started/placeholder3.png',
       buttonText: 'Finish',
     ),
@@ -113,7 +113,7 @@ class _OnboardingScreenState extends State<GetStarted> {
                     children: [
                       SizedBox(
                         height: MediaQuery.of(context).size.height *
-                            0.5, // Adjust this value as needed
+                            0.4, // Adjust this value as needed
                         child: Padding(
                           padding: const EdgeInsets.all(32.0),
                           child: Image.asset(
