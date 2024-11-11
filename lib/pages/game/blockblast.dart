@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ class BlockGame extends FlameGame<BlockGameWorld> {
             world: BlockGameWorld(),
             camera:
                 CameraComponent.withFixedResolution(width: 600, height: 1000));
+
+  late final RouterComponent router;
 
   @override
   void onGameResize(Vector2 size) {
@@ -55,20 +58,32 @@ class BlockGameWorld extends World {
 
     playButton.anchor = Anchor.center;
     add(Dash());
-    add(playButton);
+    // add(playButton);
     return super.onLoad();
   }
 }
 
-class Dash extends PositionComponent {
-  Dash() : super(position: Vector2(0, 0), size: Vector2(30, 30));
+class Dash extends PositionComponent with DragCallbacks {
+  Dash() : super(position: Vector2(0, 0), size: Vector2(50, 50));
   @override
   void update(double dt) {
     // TODO: implement update
     super.update(dt);
 
-    position = Vector2.zero();
-    angle += 0.01;
+    // position = Vector2.zero();
+    // angle += 0.01;
+  }
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    priority = 100;
+    super.onDragStart(event);
+    position += event.localPosition;
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    position += event.localDelta;
   }
 
   @override

@@ -17,47 +17,49 @@ class LibraryPage extends StatefulWidget {
 class _LibraryPageState extends State<LibraryPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            children: [
-              const Text(
-                "Plant Library",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-              ),
-              const Text(
-                "Learn about plant diseases",
-                style: TextStyle(color: Colors.black54),
-              ),
-              const SizedBox(
-                height: 18,
-              ),
-              Expanded(
-                child: GridView.count(
-                  primary: false,
-                  padding: const EdgeInsets.only(right: 8, left: 8, top: 8),
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  crossAxisCount: 2,
-                  children: [
-                    buildImageWithOverlay(
-                        "img/corn.jpeg", "Corn", const Cornlibrary()),
-                    buildImageWithOverlay(
-                        "img/apples.png", "Apple", const Potatolibrary()),
-                    buildImageWithOverlay(
-                        "img/potato_lib.jpg", "Potato", const Potatolibrary()),
-                    buildImageWithOverlay(
-                        "img/tomato.jpeg", "Tomato", const TomatoLibrary()),
-                    buildImageWithOverlay("img/bell_pepper.jpg", "Bell Pepper",
-                        const PepperBellLibrary()),
-                    buildImageWithOverlay(
-                        "img/grapes.png", "Grapes", const GrapeLibrary()),
-                  ],
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+            padding: EdgeInsets.all(8),
+            child: Column(
+              children: [
+                const Text(
+                  "Plant Library",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
-              ),
-            ],
-          )),
+                const Text(
+                  "Learn about plant diseases",
+                  style: TextStyle(color: Colors.black54),
+                ),
+                const SizedBox(
+                  height: 18,
+                ),
+                Expanded(
+                  child: GridView.count(
+                    primary: false,
+                    padding: const EdgeInsets.only(right: 8, left: 8, top: 8),
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    crossAxisCount: 2,
+                    children: [
+                      buildImageWithOverlay(
+                          "img/corn.jpeg", "Corn", const Cornlibrary()),
+                      buildImageWithOverlay(
+                          "img/apples.png", "Apple", const Potatolibrary()),
+                      buildImageWithOverlay("img/potato_lib.jpg", "Potato",
+                          const Potatolibrary()),
+                      buildImageWithOverlay(
+                          "img/tomato.jpeg", "Tomato", const TomatoLibrary()),
+                      buildImageWithOverlay("img/bell_pepper.jpg",
+                          "Bell Pepper", const PepperBellLibrary()),
+                      buildImageWithOverlay(
+                          "img/grapes.png", "Grapes", const GrapeLibrary()),
+                    ],
+                  ),
+                ),
+              ],
+            )),
+      ),
     );
   }
 

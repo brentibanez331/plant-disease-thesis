@@ -81,87 +81,85 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        // appBar: AppBar(
-        //     title: const Text(
-        //       "Hi, Brent!",
-        //       style: TextStyle(color: Colors.black, fontSize: 24),
-        //     ),
-        //     foregroundColor: Colors.white,
-        //     backgroundColor: Colors.transparent,
-        //     actions: [
-        //       PopupMenuButton(
-        //         onSelected: (value) {
-        //           if (value == 'Logout') {
-        //             _logout();
-        //           } else if (value == 'Settings') {
-        //             //_settings();
-        //           }
-        //         },
-        //         icon: const Icon(
-        //           Icons.more_vert,
-        //           color: Colors.black,
-        //         ),
-        //         itemBuilder: (BuildContext context) {
-        //           return [
-        //             const PopupMenuItem(
-        //                 value: "Logout", child: Text("Logout")),
-        //             const PopupMenuItem(
-        //                 value: "Settings", child: Text("Settings"))
-        //           ];
-        //         },
-        //       )
-        //     ]),
-        body: IndexedStack(
-          index: currentPageIndex,
-          children: [
-            HomePage(
-              user: widget.user,
-              setPageIndex: setPageIndex,
-            ),
-            ScanPage(scans: scans, refreshAllData: getAllData),
-            LibraryPage(),
-            Community(user: widget.user, posts: posts),
-            ProfilePage(user: widget.user)
-          ],
-        ),
-        bottomNavigationBar: NavigationBar(
-          onDestinationSelected: (index) {
-            setState(() {
-              currentPageIndex = index;
-              debugPrint(currentPageIndex.toString());
-            });
-          },
-          selectedIndex: currentPageIndex,
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home_outlined),
-              label: 'Home',
-              selectedIcon: Icon(Icons.home),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.camera),
-              label: 'Scan',
-              selectedIcon: Icon(Icons.camera_outlined),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.book),
-              label: 'Library',
-              selectedIcon: Icon(Icons.book_outlined),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.chat),
-              label: 'Community',
-              selectedIcon: Icon(Icons.chat_outlined),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person_rounded),
-              label: 'Profile',
-              selectedIcon: Icon(Icons.person_outlined),
-            )
-          ],
-        ),
+    return Scaffold(
+      // appBar: AppBar(
+      //     title: const Text(
+      //       "Hi, Brent!",
+      //       style: TextStyle(color: Colors.black, fontSize: 24),
+      //     ),
+      //     foregroundColor: Colors.white,
+      //     backgroundColor: Colors.transparent,
+      //     actions: [
+      //       PopupMenuButton(
+      //         onSelected: (value) {
+      //           if (value == 'Logout') {
+      //             _logout();
+      //           } else if (value == 'Settings') {
+      //             //_settings();
+      //           }
+      //         },
+      //         icon: const Icon(
+      //           Icons.more_vert,
+      //           color: Colors.black,
+      //         ),
+      //         itemBuilder: (BuildContext context) {
+      //           return [
+      //             const PopupMenuItem(
+      //                 value: "Logout", child: Text("Logout")),
+      //             const PopupMenuItem(
+      //                 value: "Settings", child: Text("Settings"))
+      //           ];
+      //         },
+      //       )
+      //     ]),
+      body: IndexedStack(
+        index: currentPageIndex,
+        children: [
+          HomePage(
+            user: widget.user,
+            setPageIndex: setPageIndex,
+          ),
+          ScanPage(scans: scans, refreshAllData: getAllData),
+          LibraryPage(),
+          Community(user: widget.user, posts: posts),
+          ProfilePage(user: widget.user)
+        ],
+      ),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (index) {
+          setState(() {
+            currentPageIndex = index;
+            debugPrint(currentPageIndex.toString());
+          });
+        },
+        selectedIndex: currentPageIndex,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+            selectedIcon: Icon(Icons.home),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.camera),
+            label: 'Scan',
+            selectedIcon: Icon(Icons.camera_outlined),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.book),
+            label: 'Library',
+            selectedIcon: Icon(Icons.book_outlined),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.chat),
+            label: 'Community',
+            selectedIcon: Icon(Icons.chat_outlined),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_rounded),
+            label: 'Profile',
+            selectedIcon: Icon(Icons.person_outlined),
+          )
+        ],
       ),
     );
   }

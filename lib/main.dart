@@ -22,13 +22,13 @@ void main() async {
 
   // Flame.device.fullScreen();
   BlockGame game = BlockGame();
-  // runApp(GameWidget(
-  //   game: kDebugMode ? BlockGame() : game,
-  //   backgroundBuilder: (context) {
-  //     return Container(color: AppColors.secondary);
-  //   },
-  // ));
-  runApp(const MainApp());
+  runApp(GameWidget(
+    game: kDebugMode ? BlockGame() : game,
+    backgroundBuilder: (context) {
+      return Container(color: AppColors.secondary);
+    },
+  ));
+  // runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {

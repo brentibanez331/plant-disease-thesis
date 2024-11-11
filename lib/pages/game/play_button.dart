@@ -10,11 +10,6 @@ class PlayButton extends PositionComponent with TapCallbacks {
     ..color = const Color(0xFFFFFFFF)
     ..style = PaintingStyle.fill;
 
-  // static final borderPaint = Paint()
-  //   ..color = const Color(0xFF000000)
-  //   ..style = PaintingStyle.stroke
-  //   ..strokeWidth = 4;
-
   late TextPaint textPaint; // Make textPaint a member variable
   late String text = "Classic"; // Store the text
 
@@ -55,7 +50,6 @@ class PlayButton extends PositionComponent with TapCallbacks {
 
   @override
   void onTapDown(TapDownEvent event) {
-    // TODO: implement onTapDown
-    super.onTapDown(event);
+    debugPrint("Tapped tapped");
   }
 }
