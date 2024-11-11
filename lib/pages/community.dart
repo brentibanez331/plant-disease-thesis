@@ -85,7 +85,7 @@ class _CommunityState extends State<Community> {
                   if (posts.isNotEmpty) {
                     return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: posts.length < 5 ? posts.length : 5,
+                        itemCount: 5,
                         itemBuilder: (context, index) {
                           final post = widget.posts.value![index];
                           return PostItem(
@@ -93,21 +93,21 @@ class _CommunityState extends State<Community> {
                             onLikeToggle: (liked) {
                               final updatedPosts = List<Post>.from(posts);
                               updatedPosts[index] = Post(
-                                // Copy existing post data
-                                id: post.id,
-                                userId: post.userId,
-                                username: post.username,
-                                profileImageUrl: post.profileImageUrl,
-                                title: post.title,
-                                content: post.content,
-                                noOfLikes: liked
-                                    ? post.noOfLikes - 1
-                                    : post.noOfLikes + 1, // Update like count
-                                noOfComments: post.noOfComments,
-                                createdAt: post.createdAt,
-                                liked: liked,
-                                timeDifference: post.timeDifference,
-                              );
+                                  // Copy existing post data
+                                  id: post.id,
+                                  userId: post.userId,
+                                  username: post.username,
+                                  profileImageUrl: post.profileImageUrl,
+                                  title: post.title,
+                                  content: post.content,
+                                  noOfLikes: liked
+                                      ? post.noOfLikes - 1
+                                      : post.noOfLikes + 1, // Update like count
+                                  noOfComments: post.noOfComments,
+                                  createdAt: post.createdAt,
+                                  liked: liked,
+                                  timeDifference: post.timeDifference,
+                                  imageFilePaths: post.imageFilePaths);
 
                               widget.posts.value = updatedPosts;
                             },

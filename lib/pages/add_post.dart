@@ -1,9 +1,14 @@
+import "dart:convert";
 import "dart:io";
 
 import 'package:flutter/material.dart';
+import "package:flutter_secure_storage/flutter_secure_storage.dart";
+import "package:thesis/models/post.dart";
 import "package:thesis/services/camera_service.dart";
 import "package:thesis/utils/colors.dart";
 import "package:image_picker/image_picker.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 
 class AddPost extends StatefulWidget {
   const AddPost({super.key});
@@ -16,6 +21,9 @@ class _AddPostState extends State<AddPost> {
   bool hasImage = false;
   String? picture;
   File? pictureFile;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController contentController = TextEditingController();
+  static const storage = FlutterSecureStorage();
 
   Future<void> _openGallery() async {
     final ImagePicker picker = ImagePicker();
@@ -66,6 +74,35 @@ class _AddPostState extends State<AddPost> {
     return shouldPop ?? false;
   }
 
+  Future<Post?> AddPost(String? title, String? content) async {
+    try {
+      String? token = await storage.read(key: "token");
+      String? userId = await storage.read(key: "userId");
+
+      var apiUrl = "${dotenv.env['ROOT_DOMAIN']}/api/scan/add";
+
+      var request = http.MultipartRequest("POST", Uri.parse(apiUrl));
+
+      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['Content-Type'] = 'multipart/form-data';
+
+      request.fields['Title'] = title!;
+      request.fields['Content'] = content!;
+      request.fields['UserId'] = userId!;
+
+      var response = await request.send();
+
+      if (response.statusCode == 201) {
+        var responseBody = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseBody);
+
+        debugPrint("Scan stored successfully: ${jsonResponse.toString()}");
+      } else {
+        debugPrint("Error storing scan: ${response.statusCode}");
+      }
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,16 +138,17 @@ class _AddPostState extends State<AddPost> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: titleController,
+                      decoration: const InputDecoration(
                           counterText: "",
                           border: InputBorder.none,
                           hintText: 'Add a title',
                           hintStyle: TextStyle(fontSize: 30)),
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.bold),
                       maxLines: null,
                       maxLength: 100,
                     ),
@@ -155,10 +193,11 @@ class _AddPostState extends State<AddPost> {
                       ],
                     ),
                   const SizedBox(height: 5),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: contentController,
+                      decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Body text(Optional)'),
                       maxLines: null,

@@ -12,6 +12,7 @@ class Post {
   final DateTime createdAt;
   final String timeDifference;
   final bool liked;
+  final List<String> imageFilePaths;
 
   Post(
       {required this.id,
@@ -24,22 +25,28 @@ class Post {
       required this.noOfComments,
       required this.createdAt,
       required this.liked,
-      required this.timeDifference});
+      required this.timeDifference,
+      required this.imageFilePaths});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-        id: json['id'],
-        userId: json['userId'] ?? 0,
-        username: json['user']['username'] ?? '',
-        profileImageUrl: json['user']['profileImageFilePath'] == ''
-            ? 'https://placeholder.co/40x40'
-            : '${dotenv.env['ROOT_DOMAIN']}${json['user']['profileImageFilePath']}',
-        title: json['title'] == '' ? 'Untitled Post' : json['title'],
-        content: json['content'] ?? '',
-        noOfLikes: json['noOfLikes'] ?? 0,
-        noOfComments: json['noOfComments'] ?? 0,
-        createdAt: DateTime.parse(json['createdAt']),
-        liked: json['liked'],
-        timeDifference: json['timeDifference']);
+      id: json['id'],
+      userId: json['userId'] ?? 0,
+      username: json['user']['username'] ?? '',
+      profileImageUrl: json['user']['profileImageFilePath'] == ''
+          ? 'https://placeholder.co/40x40'
+          : '${dotenv.env['ROOT_DOMAIN']}${json['user']['profileImageFilePath']}',
+      title: json['title'] == '' ? 'Untitled Post' : json['title'],
+      content: json['content'] ?? '',
+      noOfLikes: json['noOfLikes'] ?? 0,
+      noOfComments: json['noOfComments'] ?? 0,
+      createdAt: DateTime.parse(json['createdAt']),
+      liked: json['liked'],
+      timeDifference: json['timeDifference'],
+      imageFilePaths: (json['imageFilePaths'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+    );
   }
 }

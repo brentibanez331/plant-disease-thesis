@@ -7,16 +7,17 @@ import 'dart:io';
 class LikeService {
   static const storage = FlutterSecureStorage();
 
-  static Future<bool> addLike(int userId, int postId) async {
+  static Future<bool> addLike(int postId) async {
     try {
       String? token = await storage.read(key: "token");
+      String? userId = await storage.read(key: "userId");
 
       final response = await http.post(
           Uri.parse(
               "${dotenv.env['ROOT_DOMAIN']}/api/liked-post/add?userId=$userId&postId=$postId"),
           headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
 
-      if (response.statusCode != 200) {
+      if (response.statusCode != 201) {
         return false;
       }
 
@@ -28,9 +29,10 @@ class LikeService {
     }
   }
 
-  static Future<bool> removeLike(int userId, int postId) async {
+  static Future<bool> removeLike(int postId) async {
     try {
       String? token = await storage.read(key: "token");
+      String? userId = await storage.read(key: "userId");
 
       final response = await http.delete(
           Uri.parse(
