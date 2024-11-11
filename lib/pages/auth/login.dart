@@ -6,6 +6,7 @@ import 'package:thesis/pages/dashboard.dart';
 import 'package:thesis/pages/edit_profile.dart';
 import 'package:thesis/services/firebase_service.dart';
 import 'package:thesis/utils/colors.dart';
+import 'package:thesis/pages/library.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -173,7 +174,7 @@ class _LoginState extends State<LoginPage> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 100
+                  const SizedBox(height: 80
                       //height: MediaQuery.sizeOf(context).height,
                       ),
                   const Text(
@@ -238,10 +239,55 @@ class _LoginState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "No Internet Access? ",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              // Add your offline logic here
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LibraryPage()));
+                              print('Going offline');
+                            },
+                            child: Text(
+                              "Go Offline",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.secondary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     log("Go To Library");
+                      //   },
+                      //   child: Text(
+                      //     "Go Offline",
+                      //     style: TextStyle(
+                      //         fontSize: 18, color: AppColors.secondary),
+                      //   ),
+                      // )
                     ],
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 30, bottom: 30),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
                     child: Divider(
                       height:
                           10, // Adjust the height of the divider (including margins)
@@ -255,13 +301,26 @@ class _LoginState extends State<LoginPage> {
                   Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Padding(padding: EdgeInsets.all(8)),
-                          Image.asset(
-                            'img/camera.jpg',
-                            width: 70,
-                            height: 70,
+                          const Padding(padding: EdgeInsets.all(20)),
+                          Container(
+                            padding: const EdgeInsets.all(18),
+                            decoration: BoxDecoration(
+                              color: Colors.green[50],
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Camera icon
+                                Icon(
+                                  Icons.camera_alt_rounded,
+                                  size: 32,
+                                  color: Colors.green,
+                                ),
+                              ],
+                            ),
                           ),
                           const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12)),
@@ -269,10 +328,10 @@ class _LoginState extends State<LoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Identify',
+                                'Capture',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text('Determine the diseases of your plants')
+                              Text('Take a picture of your infected leaf.')
                             ],
                           )
                         ],
@@ -281,13 +340,26 @@ class _LoginState extends State<LoginPage> {
                         height: 20,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Padding(padding: EdgeInsets.all(8)),
-                          Image.asset(
-                            'img/camera.jpg',
-                            width: 70,
-                            height: 70,
+                          const Padding(padding: EdgeInsets.all(20)),
+                          Container(
+                            padding: const EdgeInsets.all(18),
+                            decoration: BoxDecoration(
+                              color: Colors.green[50],
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Camera icon
+                                Icon(
+                                  Icons.find_in_page,
+                                  size: 32,
+                                  color: Colors.green,
+                                ),
+                              ],
+                            ),
                           ),
                           const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12)),
@@ -295,10 +367,10 @@ class _LoginState extends State<LoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Identify',
+                                'Determine',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text('Determine the diseases of your plants')
+                              Text('Know the disease through our AI.')
                             ],
                           )
                         ],
@@ -307,13 +379,26 @@ class _LoginState extends State<LoginPage> {
                         height: 20,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Padding(padding: EdgeInsets.all(8)),
-                          Image.asset(
-                            'img/camera.jpg',
-                            width: 70,
-                            height: 70,
+                          const Padding(padding: EdgeInsets.all(20)),
+                          Container(
+                            padding: const EdgeInsets.all(18),
+                            decoration: BoxDecoration(
+                              color: Colors.green[50],
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Camera icon
+                                Icon(
+                                  Icons.eco,
+                                  size: 32,
+                                  color: Colors.green,
+                                ),
+                              ],
+                            ),
                           ),
                           const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12)),
@@ -321,16 +406,16 @@ class _LoginState extends State<LoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Identify',
+                                'Treat',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              Text('Determine the diseases of your plants')
+                              Text('Get treatment for your plant.')
                             ],
                           )
                         ],
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                     ],
                   )

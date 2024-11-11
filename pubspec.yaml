@@ -37,6 +37,7 @@ flutter:
     - img/diseases_img/Pepper_Bell/
     - img/diseases_img/Potato/
     - img/diseases_img/Tomato/
+    - img/get_started/
     - img/leafSample.jpeg
     - img/logo.png
     - img/camera.jpg
@@ -47,6 +48,5 @@ flutter:
     - img/grapes.png
     - img/apples.png
     - img/bell_pepper.jpg
-    - img/placeholder.png
     - img/potato_lib.jpg
     - img/

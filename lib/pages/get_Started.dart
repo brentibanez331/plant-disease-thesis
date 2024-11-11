@@ -36,21 +36,21 @@ class _OnboardingScreenState extends State<GetStarted> {
     OnboardingPage(
       title: 'Welcome To Agronex',
       description: "Diagnose plant problems quickly and easily!",
-      imagePath: 'img/placeholder.png',
+      imagePath: 'img/get_started/placeholder.png',
       buttonText: 'Get Started',
     ),
     OnboardingPage(
       title: "Diagnose Your Plant",
       description:
-          'Take a Clear Picture of a Diseased Leaf And Upload It. Our AI will analyze and suggest potential problems.',
-      imagePath: 'img/placeholder.png',
+          'Take a Clear Picture of a Diseased Leaf And Upload It.\nOur AI will analyze and suggest potential problems.',
+      imagePath: 'img/get_started/placeholder2.png',
       buttonText: 'Next',
     ),
     OnboardingPage(
       title: "Get Treatment Recommendations",
       description:
-          "We'll provide tailored advice and treatment options based on your plant's diagnosis.",
-      imagePath: 'img/placeholder.png',
+          "We'll provide tailored advice and treatment options\nbased on your plant's diagnosis.",
+      imagePath: 'img/get_started/placeholder3.png',
       buttonText: 'Finish',
     ),
   ];
