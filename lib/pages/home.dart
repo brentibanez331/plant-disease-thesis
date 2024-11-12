@@ -112,20 +112,24 @@ class _HomePageState extends State<HomePage> {
               ),
               OfferCardWidgets(
                 action: [
-                  () => widget.setPageIndex(2),
-                  () => widget.setPageIndex(1)
+                  () => widget.setPageIndex(3),
+                  () => widget.setPageIndex(1),
+                  () => widget.setPageIndex(2)
                 ],
                 imagePaths: const [
-                  'img/homepage.png',
-                  'img/homepage.png',
+                  'img/offer_img/community.png',
+                  'img/offer_img/treatment.png',
+                  'img/offer_img/library.png',
                 ],
                 titles: const [
                   'Community Page',
                   'Identify and Treat Diseases',
+                  'Search for Existing Diseases',
                 ],
                 subText: const [
                   'Like · Share · Comment',
-                  'Picture · Send · Identify',
+                  'Capture · Identify · Treat',
+                  'Find · Learn · Know'
                 ],
               ),
             ],

@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:thesis/services/like_service.dart';
 import 'package:thesis/utils/colors.dart';
 import 'package:thesis/widgets/fullscreen_image.dart';
+import 'package:thesis/pages/comments.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
@@ -100,24 +101,34 @@ class _PostItemState extends State<PostItem> {
                 ),
                 // Comment Post
                 //Title
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: Text(
-                    widget.post.title,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
+                GestureDetector(
+                  onTap: () {
+                    navigateToComments(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.post.title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 24),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          widget.post.content,
+                          maxLines: 3,
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 //Content
-                Padding(
-                  padding: EdgeInsets.only(bottom: 4, right: 8, left: 8),
-                  child: Text(
-                    widget.post.content,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+
                 if (widget.post.imageFilePaths.length > 0)
                   Padding(
                     padding: const EdgeInsets.only(top: 12.0),
@@ -257,7 +268,7 @@ class _PostItemState extends State<PostItem> {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(16),
                                 onTap: () {
-                                  debugPrint("Tapped");
+                                  navigateToComments(context);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
