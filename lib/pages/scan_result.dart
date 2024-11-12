@@ -123,6 +123,12 @@ class _ScanResultPageState extends State<ScanResultPage> {
         if (predictionResult.plant != "Background") {
           await getDiseaseInformation();
           await storeScanResult();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Please take an image of an actual plant!"),
+            backgroundColor: Colors.green, // Change color if needed
+          ));
+          Navigator.pop(context);
         }
 
         widget.refreshAllData();

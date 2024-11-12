@@ -20,8 +20,8 @@ void main() async {
     statusBarBrightness: Brightness.light, // For iOS, set status bar to light
   ));
 
-  Flame.device.fullScreen();
-  BlockGame game = BlockGame();
+  // Flame.device.fullScreen();
+  // BlockGame game = BlockGame();
   // runApp(GameWidget(
   //   game: kDebugMode ? BlockGame() : game,
   //   backgroundBuilder: (context) {

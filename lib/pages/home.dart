@@ -3,9 +3,12 @@ import 'package:thesis/models/user.dart';
 import 'package:thesis/widgets/collectionWidgets.dart';
 import 'package:thesis/widgets/circleContainerWidgets.dart';
 import 'package:thesis/widgets/offerCardWidgets.dart';
-import 'package:thesis/pages/plantInfo/corn_data.dart';
-import 'package:thesis/pages/plantInfo/tomato_data.dart';
 import 'package:thesis/pages/get_Started.dart';
+import 'package:thesis/pages/diseaseLibrary/corn_Library.dart';
+import 'package:thesis/pages/diseaseLibrary/grape_Library.dart';
+import 'package:thesis/pages/diseaseLibrary/pepper_bell_Library.dart';
+import 'package:thesis/pages/diseaseLibrary/potato_Library.dart';
+import 'package:thesis/pages/diseaseLibrary/tomato_Library.dart';
 
 class HomePage extends StatefulWidget {
   final UserModel user;
@@ -84,23 +87,23 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const CircleContainerWidgets(pageContext: [
-                CornData(),
-                TomatoData(),
-                TomatoData(),
-                TomatoData(),
-                TomatoData(),
+                Cornlibrary(),
+                TomatoLibrary(),
+                Potatolibrary(),
+                GrapeLibrary(),
+                PepperBellLibrary(),
               ], imagePaths: [
                 'img/corn.jpeg',
                 'img/tomato.jpeg',
                 'img/potato.png',
                 'img/grapes.png',
-                'img/apples.png',
+                'img/bell_pepper.jpg',
               ], foodNames: [
                 'Corn',
                 'Tomato',
                 'Potato',
                 'Grapes',
-                'Apples',
+                'Bell Pepper',
               ]),
               const SizedBox(height: 10),
               Padding(

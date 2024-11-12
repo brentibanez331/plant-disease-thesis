@@ -22,11 +22,11 @@ class _grapeLibraryState extends State<GrapeLibrary> {
               child: Column(
                 children: [
                   const Text(
-                    "Potato",
+                    "Grape",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   const Text(
-                    "Learn about plant diseases",
+                    "Learn about grape leaf diseases",
                     style: TextStyle(color: Colors.black54),
                   ),
                   const SizedBox(

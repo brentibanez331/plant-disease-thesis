@@ -26,7 +26,7 @@ class _PepperBellLibraryState extends State<PepperBellLibrary> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   const Text(
-                    "Learn about plant diseases",
+                    "Learn about bell pepper leaf diseases",
                     style: TextStyle(color: Colors.black54),
                   ),
                   const SizedBox(

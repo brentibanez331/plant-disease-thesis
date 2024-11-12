@@ -26,7 +26,7 @@ class _cornLibraryState extends State<Cornlibrary> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   const Text(
-                    "Learn about plant diseases",
+                    "Learn about corn leaf diseases",
                     style: TextStyle(color: Colors.black54),
                   ),
                   const SizedBox(

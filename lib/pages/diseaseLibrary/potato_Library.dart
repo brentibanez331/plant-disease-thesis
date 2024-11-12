@@ -26,7 +26,7 @@ class _PotatoLibraryState extends State<Potatolibrary> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   const Text(
-                    "Learn about plant diseases",
+                    "Learn about potato leaf diseases",
                     style: TextStyle(color: Colors.black54),
                   ),
                   const SizedBox(

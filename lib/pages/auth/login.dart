@@ -118,7 +118,7 @@ class _LoginState extends State<LoginPage> {
             ),
           );
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Sign in failed. Please try again.")),
+            const SnackBar(content: Text("Signed in successfully")),
           );
         }
       }
@@ -261,7 +261,7 @@ class _LoginState extends State<LoginPage> {
                               print('Going offline');
                             },
                             child: Text(
-                              "Go Offline",
+                              "Go To Offline Library",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.secondary,

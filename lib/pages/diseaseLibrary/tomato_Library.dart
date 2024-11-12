@@ -22,11 +22,11 @@ class _TomatoLibraryState extends State<TomatoLibrary> {
               child: Column(
                 children: [
                   const Text(
-                    "Potato",
+                    "Tomato",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                   ),
                   const Text(
-                    "Learn about plant diseases",
+                    "Learn about tomato leaf diseases",
                     style: TextStyle(color: Colors.black54),
                   ),
                   const SizedBox(
