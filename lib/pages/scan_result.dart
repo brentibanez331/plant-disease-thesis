@@ -120,8 +120,11 @@ class _ScanResultPageState extends State<ScanResultPage> {
         predictionResult = PredictionResult.fromJson(jsonResponse);
 
         // Make another API request for the Scan Info Storing
-        await getDiseaseInformation();
-        await storeScanResult();
+        if (predictionResult.plant != "Background") {
+          await getDiseaseInformation();
+          await storeScanResult();
+        }
+
         widget.refreshAllData();
 
         setState(() {

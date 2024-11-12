@@ -84,7 +84,7 @@ Widget infoWidget(String imgPath, String name, String scientificName,
             ),
           ),
           Positioned(
-            top: 50,
+            top: 30,
             left: 16,
             child: CircleAvatar(
               backgroundColor: const Color.fromARGB(180, 255, 255, 255),

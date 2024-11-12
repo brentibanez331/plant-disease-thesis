@@ -26,6 +26,7 @@ class CircleContainerWidgets extends StatelessWidget {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: imagePaths.length,
+          padding: EdgeInsets.symmetric(horizontal: 16),
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.only(right: 16),

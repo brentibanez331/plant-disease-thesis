@@ -51,7 +51,7 @@ class OfferCardWidgets extends StatelessWidget {
                           Text(
                             titles[index],
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           const SizedBox(height: 10),
                           Text(

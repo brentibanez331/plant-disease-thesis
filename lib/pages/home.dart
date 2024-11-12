@@ -21,68 +21,66 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.only(top: 20),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Hello, ${widget.user.firstName}' "!",
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Hello, ${widget.user.username}' "!",
+                  style: const TextStyle(
+                      fontSize: 30, fontWeight: FontWeight.bold),
+                ),
               ),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.account_box_rounded,
-                    size: 16,
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    widget.user.username,
+              Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    widget.user.firstName + " " + widget.user.lastName,
                     style: const TextStyle(
                         color: Color.fromARGB(255, 179, 179, 179)),
-                  ) //${widget.user.userName}
-                ],
-              ),
+                  )),
               const SizedBox(
-                height: 40,
+                height: 20,
               ),
-              CollectionButton(
-                action: [
-                  () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const GetStarted(),
-                      )),
-                  () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const GetStarted(),
-                      ))
-                ],
-                imagePaths: const [
-                  'img/homepage.png',
-                  'img/homepage.png',
-                ],
-                mainTexts: const [
-                  'Get Started with',
-                  'Check our latest',
-                ],
-                titleTexts: const [
-                  'Agronex',
-                  'Updates',
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: CollectionButton(
+                  action: [
+                    () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const GetStarted(),
+                        )),
+                    () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const GetStarted(),
+                        ))
+                  ],
+                  imagePaths: const [
+                    'img/homepage.png',
+                    'img/homepage.png',
+                  ],
+                  mainTexts: const [
+                    'Get Started with',
+                    'Check our latest',
+                  ],
+                  titleTexts: const [
+                    'Agronex',
+                    'Updates',
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 30,
               ),
-              const Text(
-                "Learn About",
-                style: TextStyle(
-                  fontSize: 20,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: const Text(
+                  "Learn About Diseases",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
               const CircleContainerWidgets(pageContext: [
@@ -105,9 +103,12 @@ class _HomePageState extends State<HomePage> {
                 'Apples',
               ]),
               const SizedBox(height: 10),
-              const Text(
-                "Check What We Offer!",
-                style: TextStyle(fontSize: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: const Text(
+                  "Check What We Offer!",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
               ),
               OfferCardWidgets(
                 action: [

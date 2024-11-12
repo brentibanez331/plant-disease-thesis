@@ -20,7 +20,7 @@ class _LibraryPageState extends State<LibraryPage> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.only(top: 20),
             child: Column(
               children: [
                 const Text(
