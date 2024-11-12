@@ -41,6 +41,16 @@ class _PepperBellLibraryState extends State<PepperBellLibrary> {
                       crossAxisCount: 2,
                       children: [
                         buildImageWithOverlay(
+                            "img/diseases_img/Pepper_Bell/pepper_healthy.png",
+                            "Healthy Bell Pepper Leaf",
+                            infoWidget(
+                                "img/diseases_img/Pepper_Bell/pepper_healthy.png",
+                                "Healthy Bell Pepper Leaf",
+                                "Capsicum annuum",
+                                "Healthy bell pepper leaves are simple, oval to lance-shaped, and display a smooth, glossy appearance. The leaves show a uniform dark green color and are thick and leathery in texture. They typically measure 4-8 inches in length with smooth margins and a pointed tip. The leaves have prominent veins that are lighter in color than the leaf blade but still maintain a healthy green hue. When healthy, the leaves stand firm on their petioles and show good turgor pressure. The surface is smooth and waxy, without any blistering or deformities.",
+                                "",
+                                "")),
+                        buildImageWithOverlay(
                             "img/diseases_img/Pepper_Bell/pepper_bacterialspot.jpg",
                             "Bacterial Spot",
                             infoWidget(

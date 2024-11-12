@@ -41,6 +41,16 @@ class _TomatoLibraryState extends State<TomatoLibrary> {
                       crossAxisCount: 2,
                       children: [
                         buildImageWithOverlay(
+                            "img/diseases_img/Tomato/tomato_healthy.jpg",
+                            "Healthy Tomato Leaf",
+                            infoWidget(
+                                "img/diseases_img/Tomato/tomato_healthy.jpg",
+                                "Healthy Tomato Leaf",
+                                "Solanum lycopersicum",
+                                "Healthy tomato leaves are compound, featuring 5-7 major leaflets with smaller leaflets in between. The leaves display a deep green color and have a distinctly aromatic smell when touched. The leaflets are slightly serrated along the edges and have a slightly fuzzy texture due to fine hairs covering both surfaces. A healthy tomato leaf shows good turgidity and stands firm on the stem. The leaves are arranged alternately on the main stem, and the surface appears slightly crinkled but uniform in texture. Each leaflet maintains consistent coloration throughout, without any yellowing or spots.",
+                                "",
+                                "")),
+                        buildImageWithOverlay(
                           "img/diseases_img/Tomato/tomato_bacterialspot.jpg",
                           "Bacterial Spot",
                           infoWidget(

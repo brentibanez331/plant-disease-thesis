@@ -41,6 +41,16 @@ class _grapeLibraryState extends State<GrapeLibrary> {
                       crossAxisCount: 2,
                       children: [
                         buildImageWithOverlay(
+                            "img/diseases_img/Grape/grape_healthy.jpg",
+                            "Healthy Grape Leaf",
+                            infoWidget(
+                                "img/diseases_img/Grape/grape_healthy.jpg",
+                                "Healthy Grape Leaf",
+                                "Vitis vinifera",
+                                "Healthy grape leaves are large, palmate in shape with 3-5 distinct lobes, creating their characteristic fan-like appearance. The leaves display a bright to medium green color and can reach 6-8 inches in diameter when fully mature. The upper surface is smooth while the lower surface may have a slightly fuzzy texture. The leaf margins feature prominent serrations that are uniform and well-defined. The veins are organized in a prominent network pattern, radiating from the base of the leaf. Healthy grape leaves maintain their firm structure and show excellent flexibility without being brittle. The leaf blade is fully expanded and flat, showing no signs of cupping or distortion.",
+                                "",
+                                "")),
+                        buildImageWithOverlay(
                           "img/diseases_img/Grape/grape_leafblight.jpeg",
                           "Leaf Blight",
                           infoWidget(

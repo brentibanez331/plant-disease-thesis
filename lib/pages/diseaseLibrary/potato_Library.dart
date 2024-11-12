@@ -41,6 +41,16 @@ class _PotatoLibraryState extends State<Potatolibrary> {
                       crossAxisCount: 2,
                       children: [
                         buildImageWithOverlay(
+                            "img/diseases_img/Potato/potato_healthy.jpg",
+                            "Healthy Potato Leaf",
+                            infoWidget(
+                                "img/diseases_img/Potato/potato_healthy.jpg",
+                                "Healthy Potato Leaf",
+                                "Solanum tuberosum",
+                                "Healthy potato leaves are compound leaves with an oval to oblong shape, dark to medium green in color. Each compound leaf consists of 7-9 primary leaflets and smaller secondary leaflets between them. The leaflets have a slightly textured surface but remain smooth to touch. They display a uniform green color throughout, without any spots or discoloration. The leaves are arranged alternately on the stem, and when healthy, they stand firm and fully expanded. The leaf margins are slightly serrated but uniform, and the overall appearance is lush and vigorous.",
+                                "",
+                                "")),
+                        buildImageWithOverlay(
                           "img/diseases_img/Potato/potato_earlyblight.png",
                           "Early Blight",
                           infoWidget(

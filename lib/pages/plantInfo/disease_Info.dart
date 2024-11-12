@@ -62,18 +62,23 @@ Widget infoWidget(String imgPath, String name, String scientificName,
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             TextSpan(text: description),
-                            const TextSpan(
-                              text: "\n\nTreatment\n\n",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            TextSpan(text: treatment),
-                            const TextSpan(
-                              text: "\n\nPrevention\n\n",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            TextSpan(text: prevention),
+                            if (treatment != null && treatment.isNotEmpty) ...[
+                              const TextSpan(
+                                text: "\n\nTreatment\n\n",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(text: treatment),
+                            ],
+                            if (prevention != null &&
+                                prevention.isNotEmpty) ...[
+                              const TextSpan(
+                                text: "\n\nPrevention\n\n",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(text: prevention),
+                            ],
                           ],
                         ),
                       ),
