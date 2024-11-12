@@ -5,6 +5,7 @@ import "package:thesis/models/scans.dart";
 import "package:thesis/services/scan_service.dart";
 import "package:thesis/utils/colors.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import "package:thesis/widgets/fullscreen_image.dart";
 
 class ScanPreviousPage extends StatefulWidget {
   final Scan scan;
@@ -46,12 +47,26 @@ class _ScanPreviousState extends State<ScanPreviousPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image(
-                  image: NetworkImage(
-                      "${dotenv.env['ROOT_DOMAIN']}${widget.scan.imageFilePath}"),
-                  height: 300,
-                  width: double.maxFinite,
-                  fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FullScreenImage(
+                          imagePath:
+                              "${dotenv.env['ROOT_DOMAIN']}${widget.scan.imageFilePath}",
+                          isImageAsset: false,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Image(
+                    image: NetworkImage(
+                        "${dotenv.env['ROOT_DOMAIN']}${widget.scan.imageFilePath}"),
+                    height: 300,
+                    width: double.maxFinite,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 SizedBox(height: 10),
                 Padding(
@@ -64,7 +79,6 @@ class _ScanPreviousState extends State<ScanPreviousPage> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 30),
                       ),
-                      SizedBox(),
                       Container(
                         decoration: BoxDecoration(
                           color: AppColors.danger.withOpacity(0.8),
