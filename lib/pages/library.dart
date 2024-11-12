@@ -44,8 +44,6 @@ class _LibraryPageState extends State<LibraryPage> {
                     children: [
                       buildImageWithOverlay(
                           "img/corn.jpeg", "Corn", const Cornlibrary()),
-                      buildImageWithOverlay(
-                          "img/apples.png", "Apple", const Potatolibrary()),
                       buildImageWithOverlay("img/potato_lib.jpg", "Potato",
                           const Potatolibrary()),
                       buildImageWithOverlay(

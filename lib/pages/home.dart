@@ -64,15 +64,12 @@ class _HomePageState extends State<HomePage> {
                   ],
                   imagePaths: const [
                     'img/homepage.png',
-                    'img/homepage.png',
                   ],
                   mainTexts: const [
                     'Get Started with',
-                    'Check our latest',
                   ],
                   titleTexts: const [
                     'Agronex',
-                    'Updates',
                   ],
                 ),
               ),
