@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thesis/models/post.dart';
 import 'package:thesis/models/user.dart';
-import 'package:thesis/pages/comments.dart';
+import 'package:thesis/pages/post_single.dart';
 import 'package:thesis/pages/add_post.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:thesis/widgets/post_item.dart';
@@ -9,8 +9,13 @@ import 'package:thesis/widgets/post_item.dart';
 class Community extends StatefulWidget {
   final UserModel user;
   final ValueNotifier<List<Post>?> posts;
+  final VoidCallback refreshAllData;
 
-  const Community({super.key, required this.user, required this.posts});
+  const Community(
+      {super.key,
+      required this.user,
+      required this.posts,
+      required this.refreshAllData});
 
   @override
   _CommunityState createState() => _CommunityState();
@@ -26,8 +31,11 @@ class _CommunityState extends State<Community> {
         shape: const CircleBorder(),
         backgroundColor: const Color.fromARGB(255, 63, 133, 231),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AddPost()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AddPost(refreshAllData: widget.refreshAllData)));
         },
         child: const Icon(
           Icons.add,
@@ -85,11 +93,13 @@ class _CommunityState extends State<Community> {
                   if (posts.isNotEmpty) {
                     return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: 5,
+                        itemCount: widget.posts.value?.length,
                         itemBuilder: (context, index) {
                           final post = widget.posts.value![index];
                           return PostItem(
                             post: post,
+                            refreshAllData: widget.refreshAllData,
+                            user: widget.user,
                             onLikeToggle: (liked) {
                               final updatedPosts = List<Post>.from(posts);
                               updatedPosts[index] = Post(

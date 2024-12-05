@@ -122,7 +122,8 @@ class _DashboardState extends State<Dashboard> {
             ),
             ScanPage(scans: scans, refreshAllData: getAllData),
             LibraryPage(),
-            Community(user: widget.user, posts: posts),
+            Community(
+                user: widget.user, posts: posts, refreshAllData: getAllData),
             ProfilePage(user: widget.user)
           ],
         ),

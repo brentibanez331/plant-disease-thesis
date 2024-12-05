@@ -1,21 +1,29 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:thesis/models/post.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:thesis/models/user.dart';
+import 'package:thesis/pages/edit_post.dart';
 import 'package:thesis/services/like_service.dart';
 import 'package:thesis/utils/colors.dart';
 import 'package:thesis/widgets/fullscreen_image.dart';
-import 'package:thesis/pages/comments.dart';
+import 'package:thesis/pages/post_single.dart';
+import 'package:http/http.dart' as http;
 
 class PostItem extends StatefulWidget {
   final Post post;
   final ValueChanged<bool> onLikeToggle;
+  final VoidCallback refreshAllData;
+  final UserModel user;
 
-  const PostItem({
-    super.key,
-    required this.post,
-    required this.onLikeToggle,
-  });
+  const PostItem(
+      {super.key,
+      required this.post,
+      required this.onLikeToggle,
+      required this.refreshAllData,
+      required this.user});
 
   @override
   _PostItemState createState() => _PostItemState();
@@ -23,11 +31,34 @@ class PostItem extends StatefulWidget {
 
 class _PostItemState extends State<PostItem> {
   late bool likedPost; // Declare likedPost here
+  static const storage = FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
     likedPost = widget.post.liked; // Initialize it once
+  }
+
+  Future<void> deletePost() async {
+    try {
+      String? token = await storage.read(key: "token");
+
+      final response = await http.delete(
+          Uri.parse(
+              "${dotenv.env['ROOT_DOMAIN']}/api/post/delete/${widget.post.id}"),
+          headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+
+      if (response.statusCode != 204) {
+        debugPrint("Post not Deleted");
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Your post was successfully removed")),
+      );
+      widget.refreshAllData();
+    } catch (e) {
+      debugPrint("$e");
+    }
   }
 
   @override
@@ -82,20 +113,37 @@ class _PostItemState extends State<PostItem> {
                           ],
                         ),
                       ),
-                      PopupMenuButton<String>(
-                        icon: const Icon(Icons.more_vert),
-                        itemBuilder: (BuildContext context) {
-                          return [
-                            const PopupMenuItem(
-                                value: "EditPost", child: Text("Edit")),
-                            const PopupMenuItem(
-                                value: "DeletePost", child: Text("Delete"))
-                          ];
-                        },
-                        onSelected: (String value) {
-                          print('Selected: $value');
-                        },
-                      ),
+                      if (widget.user.id == widget.post.userId)
+                        PopupMenuButton<String>(
+                          icon: const Icon(Icons.more_vert),
+                          itemBuilder: (BuildContext context) {
+                            return [
+                              PopupMenuItem(
+                                value: "EditPost",
+                                child: Text("Edit"),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditPostPage(
+                                          refreshAllData: widget.refreshAllData,
+                                          post: widget.post),
+                                    ),
+                                  );
+                                },
+                              ),
+                              PopupMenuItem(
+                                  value: "DeletePost",
+                                  child: Text("Delete"),
+                                  onTap: () {
+                                    deletePost();
+                                  })
+                            ];
+                          },
+                          onSelected: (String value) {
+                            print('Selected: $value');
+                          },
+                        ),
                     ],
                   ),
                 ),
@@ -103,7 +151,8 @@ class _PostItemState extends State<PostItem> {
                 //Title
                 GestureDetector(
                   onTap: () {
-                    navigateToComments(context);
+                    navigateToComments(
+                        context, widget.user, widget.post, widget.onLikeToggle);
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -268,7 +317,8 @@ class _PostItemState extends State<PostItem> {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(16),
                                 onTap: () {
-                                  navigateToComments(context);
+                                  navigateToComments(context, widget.user,
+                                      widget.post, widget.onLikeToggle);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(

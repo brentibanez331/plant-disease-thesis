@@ -10,23 +10,32 @@ import "package:thesis/utils/colors.dart";
 import "package:image_picker/image_picker.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import "package:thesis/widgets/fullscreen_image.dart";
 
-class AddPost extends StatefulWidget {
+class EditPostPage extends StatefulWidget {
   final VoidCallback refreshAllData;
-  const AddPost({super.key, required this.refreshAllData});
+  final Post post;
+  const EditPostPage(
+      {super.key, required this.refreshAllData, required this.post});
 
   @override
-  _AddPostState createState() => _AddPostState();
+  _EditPostState createState() => _EditPostState();
 }
 
-class _AddPostState extends State<AddPost> {
+class _EditPostState extends State<EditPostPage> {
   bool hasImage = false;
   File? pictureFile;
   final List<XFile> _selectedImages = [];
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
   static const storage = FlutterSecureStorage();
-  bool isUploading = false;
+
+  @override
+  void initState() {
+    titleController.text = widget.post.title;
+    contentController.text = widget.post.content;
+    super.initState();
+  }
 
   Future<void> pickImages() async {
     final ImagePicker picker = ImagePicker();
@@ -37,21 +46,7 @@ class _AddPostState extends State<AddPost> {
         _selectedImages.addAll(pickedImages);
       });
     }
-
-    // // final XFile? photo = await picker.pickImage(source: ImageSource.gallery);
-
-    // if (photo == null) {
-    //   return;
-    // }
-    // updateSelectedPicture(photo.path);
   }
-
-  // void updateSelectedPicture(String path) {
-  //   setState(() {
-  //     pictureFile = File(path);
-  //     hasImage = true;
-  //   });
-  // }
 
   Future<bool> _showExitDialog() async {
     final shouldPop = await showDialog<bool>(
@@ -85,53 +80,41 @@ class _AddPostState extends State<AddPost> {
     return shouldPop ?? false;
   }
 
-  Future<Post?> addPost() async {
-    setState(() => isUploading = true);
+  Future<Post?> editPost() async {
     try {
       String? token = await storage.read(key: "token");
       String? userId = await storage.read(key: "userId");
 
-      var apiUrl = "${dotenv.env['ROOT_DOMAIN']}/api/post/add";
+      final response = await http.put(
+          Uri.parse("${dotenv.env['ROOT_DOMAIN']}/api/post/${widget.post.id}"),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer $token",
+            'Content-Type': 'application/json', // Important for JSON body
+          },
+          body: jsonEncode({
+            "title": titleController.text,
+            "content": contentController.text
+          }));
 
-      var request = http.MultipartRequest("POST", Uri.parse(apiUrl));
-
-      request.headers['Authorization'] = 'Bearer $token';
-      request.headers['Content-Type'] = 'multipart/form-data';
-
-      request.fields['Title'] = titleController.text;
-      request.fields['Content'] = contentController.text;
-      request.fields['UserId'] = userId!;
-
-      for (var image in _selectedImages) {
-        request.files
-            .add(await http.MultipartFile.fromPath("images", image.path));
-      }
-
-      var response = await request.send();
-
-      if (response.statusCode == 201) {
-        var responseBody = await response.stream.bytesToString();
-        var jsonResponse = jsonDecode(responseBody);
-
-        debugPrint("Post stored successfully: ${jsonResponse.toString()}");
-        log("This is running before all refresh");
-        widget.refreshAllData();
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body); // Decode the response
+        debugPrint("Post updated successfully: ${jsonResponse.toString()}");
+        widget.refreshAllData(); // Refresh data after successful update
+        if (context.mounted) Navigator.pop(context);
+      } else {
+        final jsonResponse = jsonDecode(response.body);
+        debugPrint(
+            "Error updating post: ${jsonResponse['message'] ?? response.statusCode}"); //Print the error message if available.
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Your post was shared successfuly"),
-            backgroundColor: AppColors.success,
-          ),
+              content: Text(
+                  "Error updating post: ${jsonResponse['message'] ?? 'Unknown Error'}")),
         );
-        Navigator.pop(context);
-      } else {
-        debugPrint("Error storing scan: ${response.statusCode}");
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),
       );
-    } finally {
-      setState(() => isUploading = false);
     }
   }
 
@@ -145,7 +128,7 @@ class _AddPostState extends State<AddPost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create New Post'),
+        title: const Text('Edit Post'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () async {
@@ -157,16 +140,14 @@ class _AddPostState extends State<AddPost> {
         ),
         actions: [
           TextButton(
-            onPressed: isUploading
-                ? null
-                : () {
-                    debugPrint("Shared");
-                    addPost();
-                  },
+            onPressed: () {
+              debugPrint("Shared");
+              editPost();
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: Text(
-                "Share",
+                "Update",
                 style: TextStyle(fontSize: 20, color: AppColors.secondary),
               ),
             ),
@@ -244,85 +225,90 @@ class _AddPostState extends State<AddPost> {
                       maxLines: null,
                     ),
                   ),
-                  if (_selectedImages.isNotEmpty)
-                    SizedBox(
-                      height: 500, // Adjust height as needed
-                      child: ListView.builder(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        // scrollDirection: Axis.horizontal,
-                        itemCount: _selectedImages.length,
-                        itemBuilder: (context, index) {
-                          return Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.file(
-                                  File(_selectedImages[index].path),
-                                  width:
-                                      double.infinity, // Adjust width as needed
-                                  height: 350, // Adjust height as needed
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: Container(
-                                  child: IconButton.filled(
-                                    style: IconButton.styleFrom(
-                                        backgroundColor:
-                                            Colors.grey.withOpacity(0.7)),
-                                    icon: const Icon(Icons.close,
-                                        color: Colors.white),
-                                    onPressed: () => removeImage(index),
+                  if (widget.post.imageFilePaths.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: SizedBox(
+                        height: 300,
+                        child: ListView.builder(
+                            itemCount: widget.post.imageFilePaths.length,
+                            padding: EdgeInsets.only(left: 4, right: 4),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final imagePath =
+                                  widget.post.imageFilePaths[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FullScreenImage(
+                                        imagePath:
+                                            "${dotenv.env['ROOT_DOMAIN']}$imagePath",
+                                        isImageAsset: false,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image(
+                                        width:
+                                            widget.post.imageFilePaths.length >
+                                                    1
+                                                ? 250
+                                                : 300,
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(
+                                            "${dotenv.env['ROOT_DOMAIN']}$imagePath")),
                                   ),
                                 ),
-                              ),
-                            ],
-                          );
-                        },
+                              );
+                            }),
                       ),
                     ),
                 ],
               ),
             ),
           ),
-          Container(
-              color: Colors.transparent,
-              height: 75,
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        pickImages();
-                      },
-                      icon: const Icon(
-                        Icons.image_outlined,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        CameraService.pickImageFromCamera();
-                      },
-                      icon: Icon(
-                        Icons.camera_alt_outlined,
-                        size: 30,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              )),
+          // Container(
+          //     color: Colors.transparent,
+          //     height: 75,
+          //     width: double.infinity,
+          //     child: Padding(
+          //       padding: const EdgeInsets.symmetric(horizontal: 10),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.start,
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: [
+          //           IconButton(
+          //             onPressed: () {
+          //               pickImages();
+          //             },
+          //             icon: const Icon(
+          //               Icons.image_outlined,
+          //               size: 30,
+          //               color: Colors.black,
+          //             ),
+          //           ),
+          //           const SizedBox(
+          //             width: 10,
+          //           ),
+          //           IconButton(
+          //             onPressed: () {
+          //               CameraService.pickImageFromCamera();
+          //             },
+          //             icon: Icon(
+          //               Icons.camera_alt_outlined,
+          //               size: 30,
+          //               color: Colors.black,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     )),
         ],
       ),
     );

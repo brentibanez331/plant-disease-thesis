@@ -7,6 +7,7 @@ import "package:thesis/pages/edit_profile.dart";
 
 class ProfilePage extends StatefulWidget {
   final UserModel user;
+
   const ProfilePage({Key? key, required this.user}) : super(key: key);
 
   @override

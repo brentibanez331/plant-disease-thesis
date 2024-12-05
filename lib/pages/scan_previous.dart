@@ -81,7 +81,7 @@ class _ScanPreviousState extends State<ScanPreviousPage> {
                           children: [
                             Text(
                               // "We're ${widget.scan.confidence > 80 ? 'highly' : 'not so'} confident that it is",
-                              "We're ${widget.scan.confidence > 80 ? '' : 'only'}${widget.scan.confidence.round()}% confident that it is",
+                              "We're ${widget.scan.confidence > 80 ? '' : 'only '}${widget.scan.confidence.round()}% confident that it is",
                               style: TextStyle(
                                   fontSize: 16, color: Colors.black45),
                             ),

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thesis/models/scans.dart';
+import 'package:thesis/pages/all_scans.dart';
 import 'package:thesis/pages/scan_previous.dart';
 import 'package:thesis/pages/scan_result.dart';
 import 'package:thesis/services/camera_service.dart';
@@ -135,7 +136,7 @@ class _ScanPageState extends State<ScanPage> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      // backgroundColor: AppColors.primary,
       body: RefreshIndicator(
         onRefresh: _refreshData,
         child: Padding(
@@ -220,136 +221,6 @@ class _ScanPageState extends State<ScanPage> {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Image.file(image!),
                 ),
-              // const SizedBox(
-              //   child: Align(
-              //     alignment: Alignment.centerLeft,
-              //     child: Padding(
-              //       padding: EdgeInsets.only(
-              //         top: 20.0,
-              //       ),
-              //       child: Text(
-              //         "Recent Scans",
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: 210,
-              //   // Dummy DATA - Replace with GET SEARCH + QTY
-              //   child: ValueListenableBuilder(
-              //     valueListenable: widget.scans,
-              //     builder: (context, scans, _) {
-              //       if (scans != null) {
-              //         if (scans.isNotEmpty) {
-              //           return ListView.builder(
-              //             scrollDirection: Axis.horizontal,
-              //             itemCount: scans.length < 3 ? scans.length : 3,
-              //             itemBuilder: (context, index) {
-              //               final scan = widget.scans.value![index];
-              //               return GestureDetector(
-              //                 onLongPress: () {
-              //                   _showOptionsDialog(scan.id);
-              //                 },
-              //                 child: SizedBox(
-              //                   width: 200,
-              //                   child: Card(
-              //                     shape: RoundedRectangleBorder(
-              //                       // Apply border radius to the entire card
-              //                       borderRadius: BorderRadius.circular(
-              //                           12), // Adjust radius as needed
-              //                     ),
-              //                     color: AppColors.primary,
-              //                     child: GestureDetector(
-              //                       onTap: () {
-              //                         Navigator.push(
-              //                           context,
-              //                           MaterialPageRoute(
-              //                             builder: (context) =>
-              //                                 ScanPreviousPage(scan: scan),
-              //                           ),
-              //                         );
-              //                       },
-              //                       child: Padding(
-              //                         padding: const EdgeInsets.only(bottom: 8.0),
-              //                         child: Column(
-              //                           crossAxisAlignment:
-              //                               CrossAxisAlignment.start,
-              //                           children: [
-              //                             // Wrap the Image in a ClipRRect to apply border radius to it as well
-              //                             ClipRRect(
-              //                               borderRadius: BorderRadius.only(
-              //                                 topLeft: Radius.circular(
-              //                                     12), // Match card's radius
-              //                                 topRight: Radius.circular(
-              //                                     12), // Match card's radius
-              //                               ),
-              //                               child: Image(
-              //                                 image: NetworkImage(
-              //                                     "${dotenv.env['ROOT_DOMAIN']}${scan.imageFilePath}"),
-              //                                 height: 100,
-              //                                 width: double.maxFinite,
-              //                                 fit: BoxFit.cover,
-              //                               ),
-              //                             ),
-              //                             const SizedBox(height: 10),
-              //                             Padding(
-              //                               padding: const EdgeInsets.symmetric(
-              //                                   horizontal: 8.0),
-              //                               child: Column(
-              //                                 crossAxisAlignment:
-              //                                     CrossAxisAlignment.start,
-              //                                 children: [
-              //                                   Text(
-              //                                     scan.plant,
-              //                                     style: const TextStyle(
-              //                                       fontWeight: FontWeight.bold,
-              //                                       fontSize: 20,
-              //                                     ),
-              //                                   ),
-              //                                   Container(
-              //                                     decoration: BoxDecoration(
-              //                                       color: AppColors.danger
-              //                                           .withOpacity(0.8),
-              //                                       borderRadius:
-              //                                           const BorderRadius.all(
-              //                                               Radius.circular(4)),
-              //                                     ),
-              //                                     padding:
-              //                                         const EdgeInsets.symmetric(
-              //                                             horizontal: 4,
-              //                                             vertical: 2),
-              //                                     child: Text(
-              //                                       scan.diseaseType,
-              //                                       style: const TextStyle(
-              //                                           color: Colors.white),
-              //                                     ),
-              //                                   ),
-              //                                   SizedBox(height: 4),
-              //                                   Text(scan.daysAgo),
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                           ],
-              //                         ),
-              //                       ),
-              //                     ),
-              //                   ),
-              //                 ),
-              //               );
-              //             },
-              //           );
-              //         } else {
-              //           return const Center(
-              //             child: Text("No recent scans available."),
-              //           );
-              //         }
-              //       } else {
-              //         // Handle the case where scans is null (e.g., show a loading indicator)
-              //         return const Center(child: CircularProgressIndicator());
-              //       }
-              //     },
-              //   ),
-              // ),
               SizedBox(
                 child: Align(
                   alignment: Alignment.centerLeft,
@@ -370,7 +241,17 @@ class _ScanPageState extends State<ScanPage> {
                         ),
                         TextButton(
                           child: const Text("View All"),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AllScansPage(
+                                  scans: widget.scans,
+                                  refreshAllData: widget.refreshAllData,
+                                ),
+                              ),
+                            );
+                          },
                         )
                       ],
                     ),
