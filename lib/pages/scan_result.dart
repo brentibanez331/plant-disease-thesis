@@ -306,73 +306,212 @@ class _ScanResultPageState extends State<ScanResultPage> {
                   if (!_requestFailed && !_isLoading) ...[
                     const SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 10.0),
+                      // Start here
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            predictionResult.plant,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 30),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.danger.withOpacity(0.8),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(4)),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                Text(
+                                  // "We're ${widget.scan.confidence > 80 ? 'highly' : 'not so'} confident that it is",
+                                  "We're ${predictionResult.confidence > 80 ? '' : 'only'}${predictionResult.confidence.round()}% confident that it is",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.black45),
+                                ),
+                                Text(
+                                  predictionResult.plant,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
+                                ),
+                                Text(
+                                  predictionResult.status,
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          predictionResult.status == "Healthy"
+                                              ? AppColors.success
+                                              : AppColors.danger),
+                                ),
+                              ],
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 2),
-                            child: Text(
-                              predictionResult.status,
-                              style: const TextStyle(color: Colors.white),
-                            ),
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(dateFormatter.format(DateTime.now())),
+                          // Align(
+                          //   alignment: Alignment.center,
+                          //   child: Column(
+                          //     children: [
+                          //       Text(
+                          //         predictionResult.plant,
+                          //         style: const TextStyle(
+                          //             fontWeight: FontWeight.bold,
+                          //             fontSize: 30),
+                          //       ),
+                          //       Container(
+                          //         decoration: BoxDecoration(
+                          //           color: predictionResult.status == "Healthy"
+                          //               ? AppColors.success.withOpacity(0.8)
+                          //               : AppColors.danger.withOpacity(0.8),
+                          //           borderRadius: const BorderRadius.all(
+                          //               Radius.circular(4)),
+                          //         ),
+                          //         padding: const EdgeInsets.symmetric(
+                          //             horizontal: 4, vertical: 2),
+                          //         child: Row(
+                          //           mainAxisSize: MainAxisSize.min,
+                          //           children: [
+                          //             // Icon(
+                          //             //   Icons.thumb_up,
+                          //             //   color: Colors.white,
+                          //             // ),
+                          //             SizedBox(
+                          //               width: 5,
+                          //             ),
+                          //             // AnimatedIcon(icon: AnimatedIcons.arrow_menu, progress: ,),
+                          //             Text(
+                          //               predictionResult.status,
+                          //               style: const TextStyle(
+                          //                   color: Colors.white, fontSize: 20),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //       const SizedBox(
+                          //         height: 10,
+                          //       ),
+                          //       Text(dateFormatter.format(DateTime.now())),
+                          //     ],
+                          //   ),
+                          // ),
                           ...[
                             Padding(
                               // <-- Make sure this is a list of Widgets
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("DESCRIPTION",
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 8),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    // const Text("DESCRIPTION",
+                                    //     style: TextStyle(
+                                    //         fontWeight: FontWeight.bold,
+                                    //         fontSize: 20)),
+                                    // const SizedBox(height: 8),
+                                    // Text(
+                                    //   "We're ${widget.scan.confidence.toString()}% confident we're giving you the correct prediction👏",
+                                    //   style: const TextStyle(fontSize: 16),
+                                    // ),
+                                    Text(
+                                      "ABOUT",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 20)),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(diseaseInfo.description,
-                                      style: TextStyle(fontSize: 16)),
-                                  const SizedBox(height: 20),
-                                  const Text("TREATMENT",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20)),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    diseaseInfo.treatment,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  const Text("HOW TO PREVENT?",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20)),
-                                  SizedBox(
-                                    height: 8,
-                                  ),
-                                  Text(
-                                    diseaseInfo.prevention,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
+                                          fontSize: 16),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      diseaseInfo!.description,
+                                      style: const TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 30),
+                                    const Text("TREATMENT",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16)),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      diseaseInfo!.treatment,
+                                      style: const TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    const SizedBox(height: 30),
+                                    const Text("PREVENTION",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16)),
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      diseaseInfo!.prevention,
+                                      style: const TextStyle(fontSize: 16),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(height: 20),
+
+                                    TextButton(
+                                        onPressed: () {},
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.flag,
+                                              color: AppColors.danger,
+                                              size: 20,
+                                            ),
+                                            SizedBox(width: 4),
+                                            Text(
+                                              "Report Result",
+                                              style: TextStyle(
+                                                  color: AppColors.danger),
+                                            ),
+                                          ],
+                                        ))
+                                    // Text(
+                                    //   "We're ${widget.scan.confidence.toString()}% confident we're giving you the correct prediction👏",
+                                    //   style: const TextStyle(fontSize: 16),
+                                    //   textAlign: TextAlign.center,
+                                    // ),
+                                    // Text(
+                                    //     "If you think this is wrong. You can submit a report here."),
+                                    // OutlinedButton(
+                                    //   onPressed: () {},
+                                    //   child: Text("Submit Report"),
+                                    //   style: OutlinedButton.styleFrom(
+                                    //     foregroundColor: Colors.red,
+                                    //     side: BorderSide(color: Colors.red),
+                                    //     shape: RoundedRectangleBorder(
+                                    //       side: BorderSide(color: Colors.red),
+                                    //       borderRadius: BorderRadius.circular(
+                                    //           50), // Adjustable border radius
+                                    //     ),
+                                    //   ),
+                                    // )
+                                    // Text(dateFormatter
+                                    //     .format(widget.scan.createdAt)),
+                                    // const Text("TREATMENT",
+                                    //     style: TextStyle(
+                                    //         fontWeight: FontWeight.bold,
+                                    //         fontSize: 20)),
+                                    // const SizedBox(height: 8),
+                                    // Text(
+                                    //   diseaseInfo!.treatment,
+                                    //   style: const TextStyle(fontSize: 16),
+                                    // ),
+                                    // const SizedBox(height: 20),
+                                    // const Text("HOW TO PREVENT?",
+                                    //     style: TextStyle(
+                                    //         fontWeight: FontWeight.bold,
+                                    //         fontSize: 20)),
+                                    // const SizedBox(
+                                    //   height: 8,
+                                    // ),
+                                    // Text(
+                                    //   diseaseInfo!.prevention,
+                                    //   style: const TextStyle(fontSize: 16),
+                                    // ),
+                                  ],
+                                ),
                               ),
                             )
                           ]

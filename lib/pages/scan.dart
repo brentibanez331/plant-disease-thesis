@@ -55,6 +55,12 @@ class _ScanPageState extends State<ScanPage> {
     }
   }
 
+  Future<void> _refreshData() async {
+    widget.refreshAllData();
+
+    setState(() {});
+  }
+
   // List of button titles
   final List<String> buttonTitles = [
     'Tomato Blight',
@@ -130,349 +136,359 @@ class _ScanPageState extends State<ScanPage> {
 
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 8.0, right: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Detect Plant Disease",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "Scan or upload a plant leaf image to idenfity",
-              style: TextStyle(color: Colors.black45),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 120,
-                      child: ElevatedButton(
-                        onPressed: _openCamera,
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.secondary,
-                            foregroundColor: Colors.white,
-                            // minimumSize: const Size(20, 100),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12))),
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.camera_alt,
-                              size: 40,
-                            ),
-                            Text(
-                              "Open Camera",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                      width: 10), // Add some space between the buttons
-                  Expanded(
-                    child: SizedBox(
-                      height: 120,
-                      child: ElevatedButton(
-                        onPressed: _openGallery,
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.secondary,
-                            foregroundColor: Colors.white,
-                            // minimumSize: const Size(20, 100),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12))),
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.upload_rounded, size: 40),
-                            Text(
-                              "Upload Image",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0, left: 8.0, right: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Detect Plant Disease",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
-            ),
-            if (image != null)
+              Text(
+                "Scan or upload a plant leaf image to idenfity",
+                style: TextStyle(color: Colors.black45),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Image.file(image!),
-              ),
-            // const SizedBox(
-            //   child: Align(
-            //     alignment: Alignment.centerLeft,
-            //     child: Padding(
-            //       padding: EdgeInsets.only(
-            //         top: 20.0,
-            //       ),
-            //       child: Text(
-            //         "Recent Scans",
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 210,
-            //   // Dummy DATA - Replace with GET SEARCH + QTY
-            //   child: ValueListenableBuilder(
-            //     valueListenable: widget.scans,
-            //     builder: (context, scans, _) {
-            //       if (scans != null) {
-            //         if (scans.isNotEmpty) {
-            //           return ListView.builder(
-            //             scrollDirection: Axis.horizontal,
-            //             itemCount: scans.length < 3 ? scans.length : 3,
-            //             itemBuilder: (context, index) {
-            //               final scan = widget.scans.value![index];
-            //               return GestureDetector(
-            //                 onLongPress: () {
-            //                   _showOptionsDialog(scan.id);
-            //                 },
-            //                 child: SizedBox(
-            //                   width: 200,
-            //                   child: Card(
-            //                     shape: RoundedRectangleBorder(
-            //                       // Apply border radius to the entire card
-            //                       borderRadius: BorderRadius.circular(
-            //                           12), // Adjust radius as needed
-            //                     ),
-            //                     color: AppColors.primary,
-            //                     child: GestureDetector(
-            //                       onTap: () {
-            //                         Navigator.push(
-            //                           context,
-            //                           MaterialPageRoute(
-            //                             builder: (context) =>
-            //                                 ScanPreviousPage(scan: scan),
-            //                           ),
-            //                         );
-            //                       },
-            //                       child: Padding(
-            //                         padding: const EdgeInsets.only(bottom: 8.0),
-            //                         child: Column(
-            //                           crossAxisAlignment:
-            //                               CrossAxisAlignment.start,
-            //                           children: [
-            //                             // Wrap the Image in a ClipRRect to apply border radius to it as well
-            //                             ClipRRect(
-            //                               borderRadius: BorderRadius.only(
-            //                                 topLeft: Radius.circular(
-            //                                     12), // Match card's radius
-            //                                 topRight: Radius.circular(
-            //                                     12), // Match card's radius
-            //                               ),
-            //                               child: Image(
-            //                                 image: NetworkImage(
-            //                                     "${dotenv.env['ROOT_DOMAIN']}${scan.imageFilePath}"),
-            //                                 height: 100,
-            //                                 width: double.maxFinite,
-            //                                 fit: BoxFit.cover,
-            //                               ),
-            //                             ),
-            //                             const SizedBox(height: 10),
-            //                             Padding(
-            //                               padding: const EdgeInsets.symmetric(
-            //                                   horizontal: 8.0),
-            //                               child: Column(
-            //                                 crossAxisAlignment:
-            //                                     CrossAxisAlignment.start,
-            //                                 children: [
-            //                                   Text(
-            //                                     scan.plant,
-            //                                     style: const TextStyle(
-            //                                       fontWeight: FontWeight.bold,
-            //                                       fontSize: 20,
-            //                                     ),
-            //                                   ),
-            //                                   Container(
-            //                                     decoration: BoxDecoration(
-            //                                       color: AppColors.danger
-            //                                           .withOpacity(0.8),
-            //                                       borderRadius:
-            //                                           const BorderRadius.all(
-            //                                               Radius.circular(4)),
-            //                                     ),
-            //                                     padding:
-            //                                         const EdgeInsets.symmetric(
-            //                                             horizontal: 4,
-            //                                             vertical: 2),
-            //                                     child: Text(
-            //                                       scan.diseaseType,
-            //                                       style: const TextStyle(
-            //                                           color: Colors.white),
-            //                                     ),
-            //                                   ),
-            //                                   SizedBox(height: 4),
-            //                                   Text(scan.daysAgo),
-            //                                 ],
-            //                               ),
-            //                             ),
-            //                           ],
-            //                         ),
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               );
-            //             },
-            //           );
-            //         } else {
-            //           return const Center(
-            //             child: Text("No recent scans available."),
-            //           );
-            //         }
-            //       } else {
-            //         // Handle the case where scans is null (e.g., show a loading indicator)
-            //         return const Center(child: CircularProgressIndicator());
-            //       }
-            //     },
-            //   ),
-            // ),
-            SizedBox(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Row(
-                        children: [
-                          Text(
-                            "Recent Scans",
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: 120,
+                        child: ElevatedButton(
+                          onPressed: _openCamera,
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.secondary,
+                              foregroundColor: Colors.white,
+                              // minimumSize: const Size(20, 100),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12))),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.camera_alt,
+                                size: 40,
+                              ),
+                              Text(
+                                "Open Camera",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 4),
-                          Icon(Icons.info_outline,
-                              size: 20, color: Colors.black54)
-                        ],
+                        ),
                       ),
-                      TextButton(
-                        child: const Text("View All"),
-                        onPressed: () {},
-                      )
-                    ],
+                    ),
+                    const SizedBox(
+                        width: 10), // Add some space between the buttons
+                    Expanded(
+                      child: SizedBox(
+                        height: 120,
+                        child: ElevatedButton(
+                          onPressed: _openGallery,
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.secondary,
+                              foregroundColor: Colors.white,
+                              // minimumSize: const Size(20, 100),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12))),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.upload_rounded, size: 40),
+                              Text(
+                                "Upload Image",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (image != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Image.file(image!),
+                ),
+              // const SizedBox(
+              //   child: Align(
+              //     alignment: Alignment.centerLeft,
+              //     child: Padding(
+              //       padding: EdgeInsets.only(
+              //         top: 20.0,
+              //       ),
+              //       child: Text(
+              //         "Recent Scans",
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(
+              //   height: 210,
+              //   // Dummy DATA - Replace with GET SEARCH + QTY
+              //   child: ValueListenableBuilder(
+              //     valueListenable: widget.scans,
+              //     builder: (context, scans, _) {
+              //       if (scans != null) {
+              //         if (scans.isNotEmpty) {
+              //           return ListView.builder(
+              //             scrollDirection: Axis.horizontal,
+              //             itemCount: scans.length < 3 ? scans.length : 3,
+              //             itemBuilder: (context, index) {
+              //               final scan = widget.scans.value![index];
+              //               return GestureDetector(
+              //                 onLongPress: () {
+              //                   _showOptionsDialog(scan.id);
+              //                 },
+              //                 child: SizedBox(
+              //                   width: 200,
+              //                   child: Card(
+              //                     shape: RoundedRectangleBorder(
+              //                       // Apply border radius to the entire card
+              //                       borderRadius: BorderRadius.circular(
+              //                           12), // Adjust radius as needed
+              //                     ),
+              //                     color: AppColors.primary,
+              //                     child: GestureDetector(
+              //                       onTap: () {
+              //                         Navigator.push(
+              //                           context,
+              //                           MaterialPageRoute(
+              //                             builder: (context) =>
+              //                                 ScanPreviousPage(scan: scan),
+              //                           ),
+              //                         );
+              //                       },
+              //                       child: Padding(
+              //                         padding: const EdgeInsets.only(bottom: 8.0),
+              //                         child: Column(
+              //                           crossAxisAlignment:
+              //                               CrossAxisAlignment.start,
+              //                           children: [
+              //                             // Wrap the Image in a ClipRRect to apply border radius to it as well
+              //                             ClipRRect(
+              //                               borderRadius: BorderRadius.only(
+              //                                 topLeft: Radius.circular(
+              //                                     12), // Match card's radius
+              //                                 topRight: Radius.circular(
+              //                                     12), // Match card's radius
+              //                               ),
+              //                               child: Image(
+              //                                 image: NetworkImage(
+              //                                     "${dotenv.env['ROOT_DOMAIN']}${scan.imageFilePath}"),
+              //                                 height: 100,
+              //                                 width: double.maxFinite,
+              //                                 fit: BoxFit.cover,
+              //                               ),
+              //                             ),
+              //                             const SizedBox(height: 10),
+              //                             Padding(
+              //                               padding: const EdgeInsets.symmetric(
+              //                                   horizontal: 8.0),
+              //                               child: Column(
+              //                                 crossAxisAlignment:
+              //                                     CrossAxisAlignment.start,
+              //                                 children: [
+              //                                   Text(
+              //                                     scan.plant,
+              //                                     style: const TextStyle(
+              //                                       fontWeight: FontWeight.bold,
+              //                                       fontSize: 20,
+              //                                     ),
+              //                                   ),
+              //                                   Container(
+              //                                     decoration: BoxDecoration(
+              //                                       color: AppColors.danger
+              //                                           .withOpacity(0.8),
+              //                                       borderRadius:
+              //                                           const BorderRadius.all(
+              //                                               Radius.circular(4)),
+              //                                     ),
+              //                                     padding:
+              //                                         const EdgeInsets.symmetric(
+              //                                             horizontal: 4,
+              //                                             vertical: 2),
+              //                                     child: Text(
+              //                                       scan.diseaseType,
+              //                                       style: const TextStyle(
+              //                                           color: Colors.white),
+              //                                     ),
+              //                                   ),
+              //                                   SizedBox(height: 4),
+              //                                   Text(scan.daysAgo),
+              //                                 ],
+              //                               ),
+              //                             ),
+              //                           ],
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               );
+              //             },
+              //           );
+              //         } else {
+              //           return const Center(
+              //             child: Text("No recent scans available."),
+              //           );
+              //         }
+              //       } else {
+              //         // Handle the case where scans is null (e.g., show a loading indicator)
+              //         return const Center(child: CircularProgressIndicator());
+              //       }
+              //     },
+              //   ),
+              // ),
+              SizedBox(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Row(
+                          children: [
+                            Text(
+                              "Recent Scans",
+                            ),
+                            SizedBox(width: 4),
+                            Icon(Icons.info_outline,
+                                size: 20, color: Colors.black54)
+                          ],
+                        ),
+                        TextButton(
+                          child: const Text("View All"),
+                          onPressed: () {},
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: ValueListenableBuilder(
-                  valueListenable: widget.scans,
-                  builder: (context, scans, _) {
-                    if (scans != null) {
-                      if (scans.isNotEmpty) {
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: scans.length < 5 ? scans.length : 5,
-                            // physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              final scan = widget.scans.value![index];
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ScanPreviousPage(scan: scan),
-                                    ),
-                                  );
-                                },
-                                onLongPress: () {
-                                  _showOptionsDialog(scan.id);
-                                },
-                                child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 4.0),
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        // Apply border radius to the entire card
-                                        borderRadius: BorderRadius.circular(
-                                            12), // Adjust radius as needed
+              Expanded(
+                child: ValueListenableBuilder(
+                    valueListenable: widget.scans,
+                    builder: (context, scans, _) {
+                      if (scans != null) {
+                        if (scans.isNotEmpty) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: scans.length < 5 ? scans.length : 5,
+                              // physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                final scan = widget.scans.value![index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ScanPreviousPage(scan: scan),
                                       ),
-                                      color: AppColors.primary,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 16.0, horizontal: 8),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                CircleAvatar(
-                                                  backgroundImage: NetworkImage(
-                                                      "${dotenv.env['ROOT_DOMAIN']}${scan.imageFilePath}"),
-                                                  radius: 25,
-                                                ),
-                                                const SizedBox(width: 10),
-                                                Column(
-                                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    // PLANT NAME
-                                                    Text(scan.plant,
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 16)),
-                                                    Container(
-                                                        decoration: BoxDecoration(
-                                                            color: AppColors
-                                                                .danger
-                                                                .withOpacity(
-                                                                    0.8),
-                                                            borderRadius:
-                                                                const BorderRadius.all(
-                                                                    Radius.circular(
-                                                                        4))),
-                                                        padding:
-                                                            const EdgeInsets.symmetric(
-                                                                horizontal: 4,
-                                                                vertical: 2),
-                                                        child: Text(
-                                                            scan.diseaseType,
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white))),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                            // Text(dateFormatter
-                                            //     .format(scan.createdAt))
-                                            Text(scan.daysAgo)
-                                          ],
+                                    );
+                                  },
+                                  onLongPress: () {
+                                    _showOptionsDialog(scan.id);
+                                  },
+                                  child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 4.0),
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          // Apply border radius to the entire card
+                                          borderRadius: BorderRadius.circular(
+                                              12), // Adjust radius as needed
                                         ),
-                                      ),
-                                    )),
-                              );
-                            });
+                                        color: AppColors.primary,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16.0, horizontal: 8),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  CircleAvatar(
+                                                    backgroundImage: NetworkImage(
+                                                        "${dotenv.env['ROOT_DOMAIN']}${scan.imageFilePath}"),
+                                                    radius: 25,
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  Column(
+                                                    // mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      // PLANT NAME
+                                                      Text(scan.plant,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize:
+                                                                      16)),
+                                                      Container(
+                                                          decoration: BoxDecoration(
+                                                              color: scan.diseaseType ==
+                                                                      "Healthy"
+                                                                  ? AppColors.success
+                                                                      .withOpacity(
+                                                                          0.8)
+                                                                  : AppColors.danger
+                                                                      .withOpacity(
+                                                                          0.8),
+                                                              borderRadius:
+                                                                  const BorderRadius.all(
+                                                                      Radius.circular(
+                                                                          4))),
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                  horizontal: 4,
+                                                                  vertical: 2),
+                                                          child: Text(
+                                                              scan.diseaseType,
+                                                              style: const TextStyle(color: Colors.white))),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                              // Text(dateFormatter
+                                              //     .format(scan.createdAt))
+                                              Text(scan.daysAgo)
+                                            ],
+                                          ),
+                                        ),
+                                      )),
+                                );
+                              });
+                        } else {
+                          return const Center(
+                            child: Text("No scans available."),
+                          );
+                        }
                       } else {
-                        return const Center(
-                          child: Text("No scans available."),
-                        );
+                        // Handle the case where scans is null (e.g., show a loading indicator)
+                        return const Center(child: CircularProgressIndicator());
                       }
-                    } else {
-                      // Handle the case where scans is null (e.g., show a loading indicator)
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),
-            )
-          ],
+                    }),
+              )
+            ],
+          ),
         ),
       ),
     );

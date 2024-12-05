@@ -95,10 +95,6 @@ class _LoginState extends State<LoginPage> {
       UserModel? user =
           await FirebaseAuthService.signInWithOTP(_verificationId!, otp);
 
-      setState(() {
-        isLoading = false;
-      });
-
       if (user != null) {
         if (user.firstName.isNotEmpty && user.lastName.isNotEmpty) {
           Navigator.pushReplacement(
@@ -124,6 +120,10 @@ class _LoginState extends State<LoginPage> {
       }
     } catch (e) {
       log('OTP verification failed: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 

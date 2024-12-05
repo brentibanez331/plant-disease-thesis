@@ -68,81 +68,195 @@ class _ScanPreviousState extends State<ScanPreviousPage> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.scan.plant,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 30),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.danger.withOpacity(0.8),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(4)),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            Text(
+                              // "We're ${widget.scan.confidence > 80 ? 'highly' : 'not so'} confident that it is",
+                              "We're ${widget.scan.confidence > 80 ? '' : 'only'}${widget.scan.confidence.round()}% confident that it is",
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.black45),
+                            ),
+                            Text(
+                              widget.scan.plant,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 30),
+                            ),
+                            Text(
+                              widget.scan.diseaseType,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: widget.scan.diseaseType == "Healthy"
+                                      ? AppColors.success
+                                      : AppColors.danger),
+                            ),
+                          ],
                         ),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 2),
-                        child: Text(
-                          widget.scan.diseaseType,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 16),
-                        ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(dateFormatter.format(widget.scan.createdAt)),
+
+                      // const SizedBox(height: 5),
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //     color: widget.scan.diseaseType == "Healthy"
+                      //         ? AppColors.success.withOpacity(0.8)
+                      //         : AppColors.danger.withOpacity(0.8),
+                      //     borderRadius:
+                      //         const BorderRadius.all(Radius.circular(4)),
+                      //   ),
+                      //   padding: const EdgeInsets.symmetric(
+                      //       horizontal: 4, vertical: 2),
+                      //   child: Text(
+                      //     "${widget.scan.diseaseType}",
+                      //     style: const TextStyle(
+                      //         color: Colors.white, fontSize: 20),
+                      //   ),
+                      // ),
 
                       // FETCHED DESCRIPTION
                       if (diseaseInfo != null) ...[
                         Padding(
                           // <-- Make sure this is a list of Widgets
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("DESCRIPTION",
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 8),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                // const Text("DESCRIPTION",
+                                //     style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20)),
+                                // const SizedBox(height: 8),
+                                // Text(
+                                //   "We're ${widget.scan.confidence.toString()}% confident we're giving you the correct prediction👏",
+                                //   style: const TextStyle(fontSize: 16),
+                                // ),
+                                Text(
+                                  "ABOUT",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20)),
-                              SizedBox(height: 8),
-                              Text(
-                                diseaseInfo!.description,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 20),
-                              Text("TREATMENT",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20)),
-                              SizedBox(height: 8),
-                              Text(
-                                diseaseInfo!.treatment,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 20),
-                              Text("HOW TO PREVENT?",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20)),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                diseaseInfo!.prevention,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
+                                      fontSize: 16),
+                                ),
+                                SizedBox(height: 4),
+                                Text(
+                                  diseaseInfo!.description,
+                                  style: const TextStyle(fontSize: 16),
+                                  textAlign: TextAlign.center,
+                                ),
+                                if (widget.scan.diseaseType != "Healthy") ...[
+                                  const SizedBox(height: 30),
+                                  const Text("TREATMENT",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16)),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    diseaseInfo!.treatment,
+                                    style: const TextStyle(fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 30),
+                                  const Text("PREVENTION",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16)),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    diseaseInfo!.prevention,
+                                    style: const TextStyle(fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+
+                                SizedBox(height: 50),
+                                Text(
+                                    "Scanned on ${dateFormatter.format(widget.scan.createdAt)}"),
+
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.flag,
+                                          color: AppColors.danger,
+                                          size: 20,
+                                        ),
+                                        SizedBox(width: 4),
+                                        Text(
+                                          "Report Result",
+                                          style: TextStyle(
+                                              color: AppColors.danger),
+                                        ),
+                                      ],
+                                    ))
+                                // Text(
+                                //   "We're ${widget.scan.confidence.toString()}% confident we're giving you the correct prediction👏",
+                                //   style: const TextStyle(fontSize: 16),
+                                //   textAlign: TextAlign.center,
+                                // ),
+                                // Text(
+                                //     "If you think this is wrong. You can submit a report here."),
+                                // OutlinedButton(
+                                //   onPressed: () {},
+                                //   child: Text("Submit Report"),
+                                //   style: OutlinedButton.styleFrom(
+                                //     foregroundColor: Colors.red,
+                                //     side: BorderSide(color: Colors.red),
+                                //     shape: RoundedRectangleBorder(
+                                //       side: BorderSide(color: Colors.red),
+                                //       borderRadius: BorderRadius.circular(
+                                //           50), // Adjustable border radius
+                                //     ),
+                                //   ),
+                                // )
+                                // Text(dateFormatter
+                                //     .format(widget.scan.createdAt)),
+                                // const Text("TREATMENT",
+                                //     style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20)),
+                                // const SizedBox(height: 8),
+                                // Text(
+                                //   diseaseInfo!.treatment,
+                                //   style: const TextStyle(fontSize: 16),
+                                // ),
+                                // const SizedBox(height: 20),
+                                // const Text("HOW TO PREVENT?",
+                                //     style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20)),
+                                // const SizedBox(
+                                //   height: 8,
+                                // ),
+                                // Text(
+                                //   diseaseInfo!.prevention,
+                                //   style: const TextStyle(fontSize: 16),
+                                // ),
+                              ],
+                            ),
                           ),
                         )
                       ] // <-- Closing bracket for the list
                       else ...[
-                        Center(child: CircularProgressIndicator()),
+                        const Center(child: CircularProgressIndicator()),
                       ]
                     ],
                   ),
